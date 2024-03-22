@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Création de compte SmartGel</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* Couleur de fond */
+      background-image: url('page_affectation/fond.png'); /* Image de fond */
+      background-size: cover; /* Ajustement de la taille de l'image */
+      background-position: center; /* Position de l'image */
+    }
+
+    .form-container {
+      border: 2px solid black; /* Contour noir */
+      padding: 30px;
+      border-radius: 10px; /* Coins arrondis */
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      background-color: #ffffff; /* Couleur de fond de la div du formulaire */
+      font-family: Arial, sans-serif; /* Utilisation de la police Arial ou une police sans-serif par défaut */
+      margin: 100px auto 20px; /* Centrer le formulaire avec une marge en haut de 100px */
+    }
+
+    .form-image {
+      background-image: url('page_affectation/logo.png'); /* Image de fond */
+      background-size: 40%; /* Ajustement de la taille de l'image */
+      background-repeat: no-repeat; /* Empêche la répétition de l'image */
+      background-position: center; /* Centrer l'image */
+      height: 150px; /* Hauteur de l'image */
+      margin-bottom: 20px; /* Ajout d'une marge en bas */
+    }
+
+    .error-message {
+      display: none; /* Par défaut, les messages d'erreur sont cachés */
+      color: red; /* Couleur du texte des messages d'erreur */
+      font-size: 0.8em; /* Taille de la police des messages d'erreur */
+      height: 50px;
+    }
+
+    .form-group {
+      margin-bottom: 20px; /* Espacement entre les groupes de formulaire */
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da; /* Bordure grise */
+      border-radius: 5px; /* Coins arrondis */
+      box-sizing: border-box; /* Boîte de modèle pour inclure le remplissage et la bordure dans la largeur */
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: blue; /* Bleu */
+      color: #ffffff; /* Texte blanc */
+      border: none;
+      border-radius: 5px; /* Coins arrondis */
+      cursor: pointer;
+      transition: background-color 0.3s; /* Transition fluide lors du survol */
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3; /* Bleu foncé au survol */
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      padding-left: 100px; /* Add some padding for aesthetics */
+      padding-right: 15px;
+      height: 52px;
+    }
+
+
+    .form-control {
+      width: 100%;
+      padding: 10px; /* Augmente la taille du padding pour ajuster la hauteur */
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      height: auto; /* Permet au select de s'adapter à la taille du contenu */
+    }
+
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">SmartGel</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Dashboard</a></li>
+        <li class="active"><a href="affectation.html">Affectation de mission</a></li>
+        <li><a href="CreationCompte.html">Créer un compte</a></li>
+        <li><a href="connexion.html">Déconnexion</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="form-container">
+  <div class="form-image"></div>
+  <form method="post">
+    <h2 class="text-center">Affectation de mission&nbsp;&nbsp;</h2>
+
+    <div class="form-group">
+      <select class="form-control" type="text" name="employer">
+        <option value="agent0">Choisissez un agent</option>
+        <option value="agent1">Martin</option>
+        <option value="agent2">Victor</option>
+      </select>
+      <small class="error-message" id="errorSelectAgent">N'oublier pas de sélectionner un agent</small>
+    </div>
+
+    <div class="form-group">
+      <select class="form-control" type="text" name="borne">
+        <option value="borne0">Choisissez une borne</option>
+        <option value="borne1">Borne 1</option>
+        <option value="born2">Borne 2</option>
+      </select>
+      <small class="error-message" id="errorSelectBorne">N'oublier pas de sélectionner une borne</small>
+    </div>
+
+    <div class="form-group">
+      <select class="form-control" type="text" name="motif">
+        <option value="motif0">Choisissez un motif</option>
+        <option value="motif1">Niveau de batterie</option>
+        <option value="motif2">Niveau de gel</option>
+        <option value="motif2">Niveau de batterie et de gel</option>
+      </select>
+      <small class="error-message" id="errorSelectMotif">N'oublier pas de sélectionner un motif</small>
+    </div>
+
+    <div class="form-group">
+      <textarea class="form-control" name="message" placeholder="Commentaire (facultatif)" rows="14"></textarea>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" type="button" onClick="verifierFormulaire()">Envoyer</button>
+    </div>
+  </form>
+</div>
+<script src="page_affectation\java.js"></script>
+</body>
+
+</html>
