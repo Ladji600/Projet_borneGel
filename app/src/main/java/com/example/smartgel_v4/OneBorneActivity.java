@@ -42,6 +42,12 @@ public class OneBorneActivity extends AppCompatActivity {
                             String heure = response.getString("Heure");
                             String date = response.getString("Date");
 
+                            //creation de l'objet MyBorne avec les donées recuperées
+                            MyBorne borne = new MyBorne(idBorne, batterie, gel, heure, date);
+
+                            //mettre à jour l'interface utislisateur en utilisant les données de l'ojet MyBorne
+                            updateUi(borne);
+
 /*
                             Log.d("idBorne", String.valueOf(idBorne));
                             Log.d("batterie", String.valueOf(batterie));
@@ -49,9 +55,9 @@ public class OneBorneActivity extends AppCompatActivity {
                             Log.d("heure", heure);
                             Log.d("date", date);
 
-*/
+
                             // Mettre à jour les TextViews dans l'interface utilisateur avec les données récupérées
-                            TextView idBorneTextView = findViewById(R.id.TextViewIdBorne);
+                           TextView idBorneTextView = findViewById(R.id.TextViewIdBorne);
                             TextView batterieTextView = findViewById(R.id.TextViewBatterie);
                             TextView gelTextView = findViewById(R.id.TextViewGel);
                             TextView heureTextView = findViewById(R.id.TextViewHeure);
@@ -66,7 +72,7 @@ public class OneBorneActivity extends AppCompatActivity {
                             gelTextView.setText("Gel: " + gel);
                             heureTextView.setText("Heure :"+heure);
                             dateTextView.setText("Date : "+date);
-
+*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -83,5 +89,20 @@ public class OneBorneActivity extends AppCompatActivity {
 
         // Ajouter la requête à la file d'attente de Volley
         Volley.newRequestQueue(this).add(request);
+    }
+
+    private void updateUi(MyBorne borne){
+        TextView idBorneTextView = findViewById(R.id.TextViewIdBorne);
+        TextView batterieTextView = findViewById(R.id.TextViewBatterie);
+        TextView gelTextView = findViewById(R.id.TextViewGel);
+        TextView heureTextView = findViewById(R.id.TextViewHeure);
+        TextView dateTextView = findViewById(R.id.TextViewDate);
+
+        idBorneTextView.setText("Id Borne: " + borne.getIdBorne());
+        batterieTextView.setText("Batterie: " + borne.getBatterie());
+        gelTextView.setText("Gel: " + borne.getGel());
+        heureTextView.setText("Heure :"+borne.getHeure());
+        dateTextView.setText("Date : "+borne.getDate());
+
     }
 }
