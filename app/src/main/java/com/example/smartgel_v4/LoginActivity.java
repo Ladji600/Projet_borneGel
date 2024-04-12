@@ -2,6 +2,7 @@ package com.example.smartgel_v4;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +19,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,9 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         btnConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String useremail = edEmail.getText().toString().trim(); // Mettre à jour useremail avec le nouvel email
-                String userpassword = edPassword.getText().toString().trim(); // Mettre à jour userpassword avec le nouveau mot de passe
-            // Ajouter des logs pour vérifier les valeurs saisies
+                String useremail = edEmail.getText().toString().trim();
+                String userpassword = edPassword.getText().toString().trim();
                 Log.d("LoginActivity", "Email saisi : " + useremail);
                 Log.d("LoginActivity", "Mot de passe saisi : " + userpassword);
 
@@ -49,32 +47,20 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Veuillez compléter tous les champs", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();
-                    // Appel à l'API
                     callLoginAPI(useremail, userpassword);
-                  //  edEmail.getText().clear();
-                   // edPassword.getText().clear();
                 }
             }
         });
     }
 
     private void callLoginAPI(String email, String password) {
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/login";
+        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/connexion";
+        url += "?email=" + email + "&password=" + password;
 
-        //String url = "https://46b15cfb-cb64-459e-b200-e0252f8636ca.mock.pstmn.io/login";
-        // Création des paramètres de la requête
-        Map<String, String> params = new HashMap<>();
-        params.put("Mail", email);
-        params.put("Mot_De_Passe", password);
-
-        // Création du corps de la requête JSON
-        JSONObject jsonParams = new JSONObject(params);
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonParams,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Traitement de la réponse de l'API
                         handleLoginResponse(response);
                     }
                 },
@@ -90,44 +76,68 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleLoginResponse(JSONObject response) {
         try {
-         /*   // Affichage de toutes les informations de la réponse dans le logcat
-            Iterator<String> keys = response.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                Log.d("API_RESPONSE", key + ": " + response.get(key));*/
-            if (response.has("IdEmployes")) {
-                int userId = response.getInt("IdEmployes");
-                Log.d("API_RESPONSE", "id: " + userId);
+            Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
+
+            int id = response.getInt("id");
+            String email = response.getString("email");
+            String mdp = response.getString("mdp");
+            String prenom = response.getString("prénom");
+            String nom = response.getString("nom");
+            String etablissement = response.getString("etablissement");
+            String role = response.getString("role");
+
+            Log.d("API_RESPONSE", "id: " + id);
+            Log.d("API_RESPONSE", "email: " + email);
+            Log.d("API_RESPONSE", "mdp: " + mdp);
+            Log.d("API_RESPONSE", "prénom: " + prenom);
+            Log.d("API_RESPONSE", "nom: " + nom);
+            Log.d("API_RESPONSE", "etablissement: " + etablissement);
+            Log.d("API_RESPONSE", "role: " + role);
+
+            switch (role) {
+                case "Agent":
+
+                    // startActivity(new Intent(LoginActivity.this, ResponsableTechActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, AgentActivity.class);
+                    // Mettre l'email dans l'intent
+                    intent.putExtra("email", email);
+                    intent.putExtra("etablissement", etablissement);
+                    // Démarrer l'activité ResponsableTechActivity avec l'intent
+                    startActivity(intent);
+                    break;
+                case "Responsable Agent":
+
+                    // startActivity(new Intent(LoginActivity.this, ResponsableTechActivity.class));
+                     intent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
+                    // Mettre l'email dans l'intent
+                    intent.putExtra("email", email);
+                    intent.putExtra("etablissement", etablissement);
+                    // Démarrer l'activité ResponsableTechActivity avec l'intent
+                    startActivity(intent);
+                    break;
+                  case "Responsable Technique":
+
+                      intent = new Intent(LoginActivity.this, EtablissementActivity.class);
+                      // Mettre l'email dans l'intent
+                      intent.putExtra("email", email);
+                      intent.putExtra("id", id);
+                      // Démarrer l'activité ResponsableTechActivity avec l'intent
+                      startActivity(intent);
+
+    break;
+
+                default:
+                    // Redirection par défaut si le rôle n'est pas reconnu
+                    startActivity(new Intent(LoginActivity.this, DefaultActivity.class));
+                    break;
             }
 
-            if (response.has("Nom")) {
-                String userNom= response.getString("Nom");
-                Log.d("API_RESPONSE", "nom: " + userNom);
-            }
-
-            if (response.has("Prenom")) {
-                String userPrenom = response.getString("Prenom");
-                Log.d("API_RESPONSE", "prenom: " + userPrenom);
-            }
-            if (response.has("Mail")) {
-                String userEmail = response.getString("Mail");
-                Log.d("API_RESPONSE", "mail: " + userEmail);
-            }
-            if (response.has("Mot_De_Passe")) {
-                String userMDP = response.getString("Mot_De_Passe");
-                Log.d("API_RESPONSE", "mdp: " + userMDP);
-            }
-            if (response.has("Id_Role")) {
-                int userRole = response.getInt("Id_role");
-                Log.d("API_RESPONSE", "id_role: " + userRole);
-            }
-            if (response.has("Id_Etablissement")) {
-                int userEtablissement = response.getInt("Id_Etablissement");
-                Log.d("API_RESPONSE", "Etablissement: " + userEtablissement);
-            }
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Erreur réponse JSON", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 }

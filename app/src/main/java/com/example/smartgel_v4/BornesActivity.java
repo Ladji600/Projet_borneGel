@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -48,11 +49,20 @@ public class BornesActivity extends AppCompatActivity {
 
         fetchBornesData();
 
+        // Retour en arrière lorsque l'image est cliquée
+       // Retour en arrière lorsque l'image est cliquée
+        ImageView imgBack = findViewById(R.id.icon_back_bornes);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Utiliser la méthode onBackPressed() pour revenir en arrière
+            }
+        });
     }
 
     private void fetchBornesData() {
         // URL de l'API à interroger
-        String url = "https://c2a10eed-4b23-4f87-b01a-2596e8315607.mock.pstmn.io/dahsboard?etablissement=JeanRostand";
+        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/dahsboard?etablissement=JeanRostand";
 
         // Création de la requête JSON Object GET avec Volley
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
