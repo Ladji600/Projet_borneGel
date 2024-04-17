@@ -4,19 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ResponsableTechActivity extends AppCompatActivity {
     CardView cardBornes;
-    CardView cardOneBorne;
+   // CardView cardOneBorne;
+    CardView cardAffectationList;
+    private String fullname;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -25,12 +23,18 @@ public class ResponsableTechActivity extends AppCompatActivity {
         setContentView(R.layout.activity_responsable_tech);
 
         // Récupérer l'email de l'intent
-        String userEmail = getIntent().getStringExtra("email");
+     //   String userEmail = getIntent().getStringExtra("email");
+        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
+        int idUser = getIntent().getIntExtra("idUser", -1);
+        String userName = getIntent().getStringExtra("nom");
+        String userFirstName = getIntent().getStringExtra("prenom");
+
 
         // Afficher l'email dans le TextView approprié
-        TextView userEmailTextView = findViewById(R.id.userRespTechTextView);
-        userEmailTextView.setText(userEmail);
+        TextView userNameTextView = findViewById(R.id.userRespTechTextView);
 
+        fullname = userName + " " + userFirstName;
+        userNameTextView.setText(fullname);
         // Ajouter la fonctionnalité de déconnexion
         ImageView imgDeconnexion = findViewById(R.id.imgLogOut);
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +61,20 @@ public class ResponsableTechActivity extends AppCompatActivity {
         String useremail = sharedPreferences.getString("email", "").toString();
         Toast.makeText(getApplicationContext(),"Bienvenue : " +useremail,Toast.LENGTH_SHORT).show();
 */
-         cardOneBorne = findViewById(R.id.cardOneBorne);
+        // cardOneBorne = findViewById(R.id.cardOneBorne);
          cardBornes = findViewById(R.id.cardBornes);
+         cardAffectationList = findViewById(R.id.cardHistorique);
 
-        cardOneBorne.setOnClickListener(new View.OnClickListener() {
+
+        cardAffectationList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(ResponsableTechActivity.this,OneBorneActivity.class));
+                Intent intent = new Intent(ResponsableTechActivity.this, HistoriqueAffectationsActivity.class);
+                intent.putExtra("nom", userName);
+                intent.putExtra("idEtablissement", idEtablissement);
+                intent.putExtra("idUser", idUser);
+                startActivity(intent);
 
             }
         });
@@ -72,7 +82,11 @@ public class ResponsableTechActivity extends AppCompatActivity {
         cardBornes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ResponsableTechActivity.this,BornesActivity.class));
+                Intent intent = new Intent(ResponsableTechActivity.this, BornesActivity.class);
+                intent.putExtra("nom", userName);
+                intent.putExtra("idEtablissement", idEtablissement);
+                intent.putExtra("idUser", idUser);
+                startActivity(intent);
             }
         });
     }

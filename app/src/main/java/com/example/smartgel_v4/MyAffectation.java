@@ -1,32 +1,28 @@
 package com.example.smartgel_v4;
 
-public class MyBorne {
-
+public class MyAffectation {
     private  int idBorne;
     private int batterie;
     private int gel;
-
-    public String getSalle() {
-        return salle;
-    }
-
-    public void setSalle(String salle) {
-        this.salle = salle;
-    }
-
-    private String salle;
     private String heure;
     private String date;
+    private String salle;
+    private String mission;
+
+    private int idEmploye;
 
     //Constructeur
-    public MyBorne(int idBorne, int gel,int batterie, String salle, String heure, String date){
+
+
+    public MyAffectation(int idBorne, String salle, int batterie, int gel, String mission, String date, String heure, int idEmploye) {
         this.idBorne = idBorne;
         this.batterie = batterie;
-        this.salle = salle;
         this.gel = gel;
         this.heure = heure;
         this.date = date;
-
+        this.salle = salle;
+        this.mission = mission;
+        this.idEmploye = idEmploye;
     }
 
     public int getIdBorne() {
@@ -68,6 +64,26 @@ public class MyBorne {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getSalle() {
+        return salle;
+    }
+
+    public void setSalle(String salle) {
+        this.salle = salle;
+    }
+
+    public String getMission() {
+        return mission;
+    }
+
+    public void setMission(String mission) {
+        this.mission = mission;
+    }
+
+    public int getIdEmploye() { return idEmploye; }
+
+    public void setIdEmploye(int idEmploye) {this.idEmploye = idEmploye; }
 
 
 }

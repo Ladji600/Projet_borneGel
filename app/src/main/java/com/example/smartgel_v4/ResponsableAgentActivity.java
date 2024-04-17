@@ -16,7 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResponsableAgentActivity extends AppCompatActivity {
-    CardView cardBornes;
+    CardView cardHistoriqueAffectation;
+     private String fullname;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,10 +27,17 @@ public class ResponsableAgentActivity extends AppCompatActivity {
 
         // Récupérer l'email de l'intent
         String userEmail = getIntent().getStringExtra("email");
+        String userName = getIntent().getStringExtra("nom");
+        String userFirstName = getIntent().getStringExtra("prenom");
+        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
+        int idUser = getIntent().getIntExtra("idUser", -1);
+
 
         // Afficher l'email dans le TextView approprié
-        TextView userEmailTextView = findViewById(R.id.userRespAgentTextView);
-        userEmailTextView.setText(userEmail);
+        TextView userNameTextView = findViewById(R.id.userRespAgentTextView);
+        fullname = userName + " " + userFirstName;
+        userNameTextView.setText(fullname);
+
         // Ajouter la fonctionnalité de déconnexion
         ImageView imgDeconnexion = findViewById(R.id.imgLogOut);
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
@@ -45,15 +53,19 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         String useremail = sharedPreferences.getString("useremail", "").toString();
         Toast.makeText(getApplicationContext(),"Bienvenue : " +useremail,Toast.LENGTH_SHORT).show();
 */
-        CardView cardOneBorne = findViewById(R.id.cardOneBorne);
+        CardView cardHistoriqueAffectation = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
 
-        String etablissement = "etablissement";
-        cardOneBorne.setOnClickListener(new View.OnClickListener() {
+       // String etablissement = "etablissement";
+        cardHistoriqueAffectation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-              new Intent(ResponsableAgentActivity.this, ResponsableTechActivity.class);
+                Intent intent = new Intent(ResponsableAgentActivity.this, HistoriqueAffectationsActivity.class);
+                intent.putExtra("nom", userName);
+                intent.putExtra("idEtablissement", idEtablissement);
+                intent.putExtra("idUser", idUser);
+                startActivity(intent);
 
             }
         });
@@ -63,7 +75,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ResponsableAgentActivity.this, BornesActivity.class);
 
-                intent.putExtra("etablissement_id", etablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
+                intent.putExtra("idEtablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
 
                 // Démarrer l'activité BornesActivity avec l'Intent
                 startActivity(intent);

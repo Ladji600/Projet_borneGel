@@ -50,11 +50,12 @@ public class OneBorneActivity extends AppCompatActivity {
                             int idBorne = response.getInt("idBorne");
                             int batterie = response.getInt("Batterie");
                             int gel = response.getInt("Gel");
-                            String heure = response.getString("Heure");
-                            String date = response.getString("Date");
+                            String heure = response.getString("heure");
+                            String date = response.getString("date");
+                            String salle = response.getString("salle");
 
                             //creation de l'objet MyBorne avec les donées recuperées
-                            MyBorne borne = new MyBorne(idBorne, batterie, gel, heure, date);
+                            MyBorne borne = new MyBorne(idBorne, gel, batterie, salle, heure, date);
 
                             //mettre à jour l'interface utislisateur en utilisant les données de l'ojet MyBorne
                             updateUi(borne);

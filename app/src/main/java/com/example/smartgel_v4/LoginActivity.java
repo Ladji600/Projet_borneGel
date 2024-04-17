@@ -19,8 +19,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 public class LoginActivity extends AppCompatActivity {
 
     EditText edEmail, edPassword;
@@ -40,13 +38,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String useremail = edEmail.getText().toString().trim();
                 String userpassword = edPassword.getText().toString().trim();
-                Log.d("LoginActivity", "Email saisi : " + useremail);
-                Log.d("LoginActivity", "Mot de passe saisi : " + userpassword);
 
                 if (useremail.length() == 0 || userpassword.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Veuillez compléter tous les champs", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();
                     callLoginAPI(useremail, userpassword);
                 }
             }
@@ -78,66 +73,56 @@ public class LoginActivity extends AppCompatActivity {
         try {
             Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
 
-            int id = response.getInt("id");
+            int idUser = response.getInt("idUser");
             String email = response.getString("email");
-            String mdp = response.getString("mdp");
-            String prenom = response.getString("prénom");
+         //   String mdp = response.getString("mdp");
+            String prenom = response.getString("prenom");
             String nom = response.getString("nom");
-            String etablissement = response.getString("etablissement");
-            String role = response.getString("role");
+          //  int idEtablissement = response.getInt("idEtablissement");
+            int role = response.getInt("role");
 
-            Log.d("API_RESPONSE", "id: " + id);
-            Log.d("API_RESPONSE", "email: " + email);
-            Log.d("API_RESPONSE", "mdp: " + mdp);
-            Log.d("API_RESPONSE", "prénom: " + prenom);
-            Log.d("API_RESPONSE", "nom: " + nom);
-            Log.d("API_RESPONSE", "etablissement: " + etablissement);
-            Log.d("API_RESPONSE", "role: " + role);
+            Log.d("idUser", "LOgin Id de l'utilisateur : " + idUser);
 
+            // Vous pouvez récupérer les autres données ici
+
+            // Redirection en fonction du rôle de l'utilisateur
             switch (role) {
-                case "Agent":
+                case 3: // Responsable Technique
+                    Intent intentResponsableTech = new Intent(LoginActivity.this, EtablissementActivity.class);
+                    intentResponsableTech.putExtra("idUser", idUser);
+                    intentResponsableTech.putExtra("email", email);
+                    intentResponsableTech.putExtra("nom", nom);
+                    intentResponsableTech.putExtra("prenom", prenom);
 
-                    // startActivity(new Intent(LoginActivity.this, ResponsableTechActivity.class));
-                    Intent intent = new Intent(LoginActivity.this, AgentActivity.class);
-                    // Mettre l'email dans l'intent
-                    intent.putExtra("email", email);
-                    intent.putExtra("etablissement", etablissement);
-                    // Démarrer l'activité ResponsableTechActivity avec l'intent
-                    startActivity(intent);
+                    startActivity(intentResponsableTech);
                     break;
-                case "Responsable Agent":
-
-                    // startActivity(new Intent(LoginActivity.this, ResponsableTechActivity.class));
-                     intent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
-                    // Mettre l'email dans l'intent
-                    intent.putExtra("email", email);
-                    intent.putExtra("etablissement", etablissement);
-                    // Démarrer l'activité ResponsableTechActivity avec l'intent
-                    startActivity(intent);
+                case 2: // Responsable Agent
+                    Intent intentResponsableAgent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
+                    int idEtablissement = response.getInt("idEtablissement");
+                    intentResponsableAgent.putExtra("idUser", idUser);
+                    intentResponsableAgent.putExtra("email", email);
+                    intentResponsableAgent.putExtra("nom", nom);
+                    intentResponsableAgent.putExtra("prenom", prenom);
+                    intentResponsableAgent.putExtra("idEtablissement", idEtablissement);
+                    startActivity(intentResponsableAgent);
                     break;
-                  case "Responsable Technique":
-
-                      intent = new Intent(LoginActivity.this, EtablissementActivity.class);
-                      // Mettre l'email dans l'intent
-                      intent.putExtra("email", email);
-                      intent.putExtra("id", id);
-                      // Démarrer l'activité ResponsableTechActivity avec l'intent
-                      startActivity(intent);
-
-    break;
-
+                case 1: // Agent
+                    Intent intentAgent = new Intent(LoginActivity.this, AgentActivity.class);
+                    idEtablissement = response.getInt("idEtablissement");
+                    intentAgent.putExtra("idUser", idUser);
+                    intentAgent.putExtra("email", email);
+                    intentAgent.putExtra("nom", nom);
+                    intentAgent.putExtra("prenom",prenom);
+                    intentAgent.putExtra("idEtablissement", idEtablissement);
+                    startActivity(intentAgent);
+                    break;
                 default:
-                    // Redirection par défaut si le rôle n'est pas reconnu
-                    startActivity(new Intent(LoginActivity.this, DefaultActivity.class));
+                    Toast.makeText(getApplicationContext(), "Rôle non reconnu", Toast.LENGTH_SHORT).show();
                     break;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Erreur réponse JSON", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".HomeActivity">
+    tools:context=".ResponsableTechActivity">
     <TextView
         android:id="@+id/titleHome"
         android:layout_width="wrap_content"
@@ -192,7 +192,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Historique"
+                    android:text="Historique Missions"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>

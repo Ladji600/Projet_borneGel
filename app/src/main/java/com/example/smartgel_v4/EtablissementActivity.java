@@ -34,13 +34,17 @@ public class EtablissementActivity extends AppCompatActivity {
 
     // Variables ajoutées
     private RecyclerView mRecyclerView;
+    private String userName;
+
+    private String prenom;
     private String userEmail;
     private EtablissementAdapter mEtablissementAdapter;
     private List<MyEtablissement> mEtablissements;
     private int userId; // Déclaration de la variable userId
+   // private int userEtablissment;
 
-    public EtablissementActivity() {
-    }
+   // public EtablissementActivity() {
+    //}
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,6 +53,10 @@ public class EtablissementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_etablissement);
 
         userEmail = getIntent().getStringExtra("email");
+        userName = getIntent().getStringExtra("nom");
+       userId = getIntent().getIntExtra("idUser", -1);
+       prenom = getIntent().getStringExtra("prenom");
+
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_etablissement);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,17 +76,23 @@ public class EtablissementActivity extends AppCompatActivity {
         mEtablissementAdapter = new EtablissementAdapter(mEtablissements, new OnItemClickListener() {
             @Override
             public void onItemClick(MyEtablissement etablissement) {
+
+                int idEtablissement = etablissement.getIdEtablissement();
                 // Gérer le clic sur un établissement ici
                 // Vous pouvez démarrer une nouvelle activité ou effectuer toute autre action souhaitée
                 Intent intent = new Intent(EtablissementActivity.this, ResponsableTechActivity.class);
-                intent.putExtra("email", userEmail);
+                intent.putExtra("nom", userName);
+                intent.putExtra("idEtablissement", idEtablissement);
+                intent.putExtra("idUser", userId);
+                intent.putExtra("prenom", prenom);
+
                 startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mEtablissementAdapter);
 
         // Récupérer l'ID de l'utilisateur depuis l'intent
-        userId = getIntent().getIntExtra("id", -1);
+        userId = getIntent().getIntExtra("idUser", -1);
         if (userId != -1) {
             // Appel de la méthode pour récupérer les données des établissements depuis l'API
             fetchEtablissementData();
@@ -103,7 +117,7 @@ public class EtablissementActivity extends AppCompatActivity {
                                 JSONObject etablissementObject = etablissementsArray.getJSONObject(i);
 
                                 int idEtablissement = etablissementObject.getInt("idEtablissement");
-                                String etablissementName = etablissementObject.getString("etablissement");
+                                String etablissementName = etablissementObject.getString("NomEtablissement");
 
                                 // Création de l'objet MyEtablissement
                                 MyEtablissement myEtablissement = new MyEtablissement(idEtablissement, etablissementName);

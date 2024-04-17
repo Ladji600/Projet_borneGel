@@ -1,6 +1,5 @@
 package com.example.smartgel_v4;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,41 +27,58 @@ import java.util.List;
 
 public class BornesActivity extends AppCompatActivity {
 
-    //variable ajoutées
+    // Variables ajoutées
     private RecyclerView mRecyclerView;
     private BorneAdapter mBorneAdapter;
     private List<MyBorne> mBornes;
+    private int idEtablissement;
+
+    private String nomEtablissement;
+
+    //private String nameEtablissement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bornes);
 
-        //
+        // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        
 
+        // Initialisation de la liste des bornes
         mBornes = new ArrayList<>();
         mBorneAdapter = new BorneAdapter(mBornes);
         mRecyclerView.setAdapter(mBorneAdapter);
 
+        // Récupération de l'ID de l'établissement depuis l'intent
+        idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
 
-        fetchBornesData();
+        if (idEtablissement != -1) {
+            // Utilisation de l'ID de l'établissement pour récupérer les données des bornes depuis l'API
+            fetchBornesData(idEtablissement);
+        } else {
+            // Gérer le cas où l'ID de l'établissement n'est pas disponible
+        }
 
-        // Retour en arrière lorsque l'image est cliquée
-       // Retour en arrière lorsque l'image est cliquée
-        ImageView imgBack = findViewById(R.id.icon_back_bornes);
-        imgBack.setOnClickListener(new View.OnClickListener() {
+
+      //  TextView EtablissementTittleTextView = findViewById(R.id.etablissementTittleTextView);
+       // EtablissementTittleTextView.setText(etanlissementName);
+
+        // Gestion du retour en arrière lorsque l'image est cliquée
+        findViewById(R.id.icon_back_bornes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Utiliser la méthode onBackPressed() pour revenir en arrière
+                finish(); // Utilisation de la méthode onBackPressed() pour revenir en arrière
             }
         });
     }
 
-    private void fetchBornesData() {
+    // Méthode pour récupérer les données des bornes depuis l'API
+    private void fetchBornesData(int idEtablissement) {
         // URL de l'API à interroger
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/dahsboard?etablissement=JeanRostand";
+        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/dashboard?idEtablissement=" + idEtablissement;
 
         // Création de la requête JSON Object GET avec Volley
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -70,32 +86,38 @@ public class BornesActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            // Extract the "Bornes" array from the response object
+                            // Extraction du tableau "Bornes" de l'objet de réponse
+                             nomEtablissement = response.getString("Etablissement");
+
+                            TextView etablissementTittleTextView = findViewById(R.id.etablissementTittleTextView);
+                            etablissementTittleTextView.setText(nomEtablissement);
+
                             JSONArray bornesArray = response.getJSONArray("Bornes");
 
-                            // Parcourir le tableau JSON des bornes
+                            // Parcours du tableau JSON des bornes
                             for (int i = 0; i < bornesArray.length(); i++) {
                                 JSONObject borneObject = bornesArray.getJSONObject(i);
 
+                                // Extraction des données de chaque borne
                                 int idBorne = borneObject.getInt("idBorne");
-                                int batterie = borneObject.getInt("batterie");
                                 int gel = borneObject.getInt("gel");
-                                String heure = borneObject.getString("Heure");
-                                String date = borneObject.getString("Date");
+                                int batterie = borneObject.getInt("batterie");
+                                String salle = borneObject.getString("salle");
+                                String heure = borneObject.getString("heure");
+                                String date = borneObject.getString("date");
 
-                                MyBorne borne = new MyBorne(idBorne, batterie, gel, heure, date);
+                                // Création de l'objet MyBorne
+                                MyBorne borne = new MyBorne(idBorne, gel, batterie, salle, heure, date);
 
+                                // Ajout de la borne à la liste
                                 mBornes.add(borne);
+                                Log.d("API Response", "Response: " + response.toString());
+                               // Log.d("ETABLISSEMENT", "Nom de l'établissement : " + nomEtablissement); // Ajoutez cette ligne
 
+                            }
 
-                          /*     // Afficher les informations de chaque borne
-                                Log.d("Borne " + i, "Id Borne: " + idBorne +
-                                        ", Batterie: " + batterie +
-                                        ", Gel: " + gel +
-                                        ", Heure: " + heure +
-                                        ", Date: " + date);*/
-                            }    mBorneAdapter.notifyDataSetChanged(); 
-                                                                       
+                            // Rafraîchissement de la RecyclerView
+                            mBorneAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -110,13 +132,11 @@ public class BornesActivity extends AppCompatActivity {
                     }
                 });
 
-        // Ajouter la requête à la file d'attente de Volley
+        // Ajout de la requête à la file d'attente de Volley
         Volley.newRequestQueue(this).add(request);
-
     }
 
-    //classe adaptateur pour RecyclerView
-
+    // Classe adaptateur pour RecyclerView
     private class BorneAdapter extends RecyclerView.Adapter<BorneAdapter.BorneViewHolder> {
 
         private List<MyBorne> myBornes;
@@ -125,31 +145,32 @@ public class BornesActivity extends AppCompatActivity {
             myBornes = bornes;
         }
 
-        @NonNull
+
         @Override
-        public BorneViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public BorneViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bornes, parent, false);
             return new BorneViewHolder(view);
         }
 
-        public void onBindViewHolder(@NonNull BorneViewHolder holder, int position) {
+        @Override
+        public void onBindViewHolder( BorneViewHolder holder, int position) {
             MyBorne borne = myBornes.get(position);
             holder.bind(borne);
-
         }
 
+        @Override
         public int getItemCount() {
             return myBornes.size();
         }
 
         public class BorneViewHolder extends RecyclerView.ViewHolder {
-            private TextView idBorneTextView, batterieTextView, gelTextView, heureTextView, dateTextView;
+            private TextView idBorneTextView, batterieTextView, gelTextView, heureTextView, dateTextView, salleTextView;
 
             public BorneViewHolder(View itemView) {
-
                 super(itemView);
                 idBorneTextView = itemView.findViewById(R.id.text_id_borne);
                 batterieTextView = itemView.findViewById(R.id.text_batterie);
+                salleTextView = itemView.findViewById(R.id.text_salle);
                 gelTextView = itemView.findViewById(R.id.text_gel);
                 heureTextView = itemView.findViewById(R.id.text_heure);
                 dateTextView = itemView.findViewById(R.id.text_date);
@@ -157,12 +178,12 @@ public class BornesActivity extends AppCompatActivity {
 
             public void bind(MyBorne borne) {
                 idBorneTextView.setText("id Borne : " + borne.getIdBorne());
-                batterieTextView.setText("Niveua de batterie : " + borne.getBatterie());
+                batterieTextView.setText("Niveau de batterie : " + borne.getBatterie());
+                salleTextView.setText("Salle : " + borne.getSalle());
                 gelTextView.setText("Niveau de gel : " + borne.getGel());
                 heureTextView.setText("Heure : " + borne.getHeure());
                 dateTextView.setText("Date : " + borne.getDate());
             }
         }
     }
-
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".HistoriqueAffectationsActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="#000000">
+
+        <TextView
+            android:id="@+id/AffectationTitletextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Liste des Affectations réalisées"
+            android:padding="16dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view_affectation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/icon_back_historique"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/recycle_view_affectation"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="300dp"
+
+        android:src="@drawable/icon_back" />
+
+</RelativeLayout>
