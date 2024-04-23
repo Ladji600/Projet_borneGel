@@ -20,17 +20,23 @@
             android:text="Id Borne :" />
 
         <TextView
-            android:id="@+id/text_id_mission"
+            android:id="@+id/text_batterie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Id Mission :" />
-
+            android:text="Batterie :" />
 
         <TextView
-            android:id="@+id/text_type_mission"
+            android:id="@+id/text_gel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mission :" />
+            android:text="Gel :" />
+
+        <TextView
+            android:id="@+id/text_salle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salle :" />
+
 
         <TextView
             android:id="@+id/text_date"
@@ -44,11 +50,17 @@
             android:layout_height="wrap_content"
             android:text="Heure : " />
 
-        <TextView
-            android:id="@+id/text_id_employe"
+
+        <!-- Bouton Appeler Affectation -->
+        <Button
+            android:id="@+id/button_appeler_affectation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Id Employé : " />
+            android:text="Affectater"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_background_light"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="120dp"/>
 
     </LinearLayout>
 

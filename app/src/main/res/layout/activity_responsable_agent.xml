@@ -17,6 +17,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
 
+
+
+
     <TextView
         android:id="@+id/userRespAgentTextView"
         android:layout_width="wrap_content"
@@ -81,7 +84,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardAffectation"
+            android:id="@+id/cardAlerte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -107,7 +110,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Affectations"
+                    android:text="Alertes"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
@@ -182,7 +185,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Historique"
+                    android:text="Historique Missions"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>

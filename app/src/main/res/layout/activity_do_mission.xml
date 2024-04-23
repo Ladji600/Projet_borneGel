@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:layout_margin="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Titre Affectation -->
+
+        <TextView
+            android:id="@+id/smartGelTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="153dp"
+            android:text="SmartGel"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/affectationTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/smartGelTitleTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="161dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="168dp"
+            android:text="Alertes"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/text_responsable_agent"
+            android:layout_width="302dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/affectationTitleTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="71dp"
+            android:text=""
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:orientation="vertical"
+            android:padding="25dp">
+
+            <TextView
+                android:id="@+id/text_id_borne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Id Borne :"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_etablissement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Etablissement :"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_id_etablissement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID Etablissement: "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_salle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle :"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_mission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mission :"
+                android:textSize="20sp" />
+
+            <!-- Liste déroulante pour les missions -->
+            <Spinner
+                android:id="@+id/spinner_mission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/text_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agents :"
+                android:textSize="20sp" />
+            <!-- Liste déroulante pour les utilisateurs -->
+
+            <Spinner
+                android:id="@+id/spinner_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:spinnerMode="dropdown" />
+
+
+            <!-- Bouton Appeler Affectation -->
+            <Button
+                android:id="@+id/button_affecter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/btn_background_light"
+                android:text="Affectater"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/icon_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/icon_back" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

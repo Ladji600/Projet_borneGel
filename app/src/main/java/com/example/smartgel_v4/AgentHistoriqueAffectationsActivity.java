@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -43,10 +44,10 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_historique_affectations);
 
         // Récupérer l'id de l'utilisateur depuis l'Intent
-        idUser = getIntent().getIntExtra("idUser", -1);
-        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
-        String userName = getIntent().getStringExtra("nom");
-        String userFirstName = getIntent().getStringExtra("prenom");
+        idUser = getIntent().getIntExtra("IdEmployes", -1);
+        int idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        String userName = getIntent().getStringExtra("Nom");
+        String userFirstName = getIntent().getStringExtra("Prenom");
 
 
         Log.d("idUser", "Id de l'utilisateur : " + idUser);
@@ -80,38 +81,31 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
 
     private void fetchAffectationsData() {
         // URL de l'API à interroger
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/missionsHistorique";
-        url += "?idEtablissement=" + idEtablissement;
-        // Vous pouvez ajouter des paramètres supplémentaires à l'URL si nécessaire
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Historique-Mission-Appli.php";
+        url += "?id_employes=" + idEtablissement;
 
         // Création de la requête JSON Array GET avec Volley
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
                             // Parcourir le tableau JSON des affectations
-                            JSONArray affectationsArray = response.getJSONArray("affectations");
-                            for (int i = 0; i < affectationsArray.length(); i++) {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject affectationObject = response.getJSONObject(i);
 
-                                JSONObject affectationObject = affectationsArray.getJSONObject(i);
+                                // Extraire les données de l'affectation
+                                int idMission = affectationObject.getInt("IdMission");
+                                String typemission = affectationObject.getString("Type");
+                                String heure = affectationObject.getString("Heure");
+                                String date = affectationObject.getString("Date");
+                                int idEmploye = affectationObject.getInt("Id_Employes");
+                                int idBorne = affectationObject.getInt("Id_Borne");
 
                                 // Vérifier si l'idEmploye correspond à l'idUser
-                                int idEmploye = affectationObject.getInt("idEmploye");
-
                                 if (idEmploye == idUser) {
-                                    // Extraire les données de l'affectation
-                                    int idBorne = affectationObject.getInt("idBorne");
-                                    String salle = affectationObject.getString("salle");
-                                    int batterie = affectationObject.getInt("batterie");
-                                    int gel = affectationObject.getInt("gel");
-                                    String mission = affectationObject.getString("mission");
-                                    String date = affectationObject.getString("date");
-                                    String heure = affectationObject.getString("heure");
-
-                                    Log.d("API Response", "Response: " + response.toString());
                                     // Création de l'objet MyAffectation
-                                    MyAffectation myAffectation = new MyAffectation(idBorne, salle, batterie, gel, mission, date, heure, idEmploye);
+                                    MyAffectation myAffectation = new MyAffectation(idMission, typemission, heure, date, idEmploye, idBorne);
 
                                     // Ajout de l'affectation à la liste
                                     mAffectations.add(myAffectation);
@@ -166,36 +160,30 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
 
         public static class AffectationsViewHolder extends RecyclerView.ViewHolder {
             private TextView idBorneTextView;
-            private TextView salleTextView;
-            private TextView batterieTextView;
-            private TextView gelTextView;
-            private TextView missionTextView;
+            private TextView idMission;
+            private TextView typemissionTextView;
             private TextView dateTextView;
             private TextView heureTextView;
+
             private TextView idEmploye;
 
             public AffectationsViewHolder(View itemView) {
                 super(itemView);
                 idBorneTextView = itemView.findViewById(R.id.text_id_borne);
-                salleTextView = itemView.findViewById(R.id.text_salle);
-                batterieTextView = itemView.findViewById(R.id.text_batterie);
-                gelTextView = itemView.findViewById(R.id.text_gel);
-                missionTextView = itemView.findViewById(R.id.text_mission);
+                typemissionTextView = itemView.findViewById(R.id.text_type_mission);
                 dateTextView = itemView.findViewById(R.id.text_date);
                 heureTextView = itemView.findViewById(R.id.text_heure);
                 idEmploye = itemView.findViewById(R.id.text_id_employe);
-
+                idMission = itemView.findViewById(R.id.text_id_mission);
             }
 
             public void bind(MyAffectation affectation) {
                 idBorneTextView.setText("Id Borne : " + affectation.getIdBorne());
-                salleTextView.setText("Salle : " + affectation.getSalle());
-                batterieTextView.setText("Niveau de batterie : " + affectation.getBatterie());
-                gelTextView.setText("Niveau de gel : " + affectation.getGel());
-                missionTextView.setText("Mission : " + affectation.getMission());
+                idMission.setText("Id Mission :"+ affectation.getIdMission());
                 dateTextView.setText("Date : " + affectation.getDate());
                 heureTextView.setText("Heure : " + affectation.getHeure());
-                idEmploye.setText("Id Employe :" + affectation.getIdEmploye());
+                idEmploye.setText("Id Employé :" + affectation.getIdEmploye());
+                typemissionTextView.setText("Mission :"+ affectation.getTypeMission());
             }
         }
     }

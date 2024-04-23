@@ -45,7 +45,7 @@ public class BornesActivity extends AppCompatActivity {
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        
+
 
         // Initialisation de la liste des bornes
         mBornes = new ArrayList<>();
@@ -78,7 +78,7 @@ public class BornesActivity extends AppCompatActivity {
     // Méthode pour récupérer les données des bornes depuis l'API
     private void fetchBornesData(int idEtablissement) {
         // URL de l'API à interroger
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/dashboard?idEtablissement=" + idEtablissement;
+        String url = "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/dashboard?idEtablissement=" + idEtablissement;
 
         // Création de la requête JSON Object GET avec Volley
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,

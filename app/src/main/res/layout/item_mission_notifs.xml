@@ -19,18 +19,25 @@
             android:layout_height="wrap_content"
             android:text="Id Borne :" />
 
-        <TextView
-            android:id="@+id/text_id_mission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Id Mission :" />
-
 
         <TextView
-            android:id="@+id/text_type_mission"
+            android:id="@+id/text_salle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mission :" />
+            android:text="Salle :" />
+
+        <TextView
+            android:id="@+id/text_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batterie :" />
+
+        <TextView
+            android:id="@+id/text_mission_faire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gel :" />
+
 
         <TextView
             android:id="@+id/text_date"
@@ -44,11 +51,6 @@
             android:layout_height="wrap_content"
             android:text="Heure : " />
 
-        <TextView
-            android:id="@+id/text_id_employe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Id Employé : " />
 
     </LinearLayout>
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">smartGel_v4</string>
+    <string name="channel_name">Nom du canal</string>
+    <string name="channel_description">Description du canal</string>
 </resources>

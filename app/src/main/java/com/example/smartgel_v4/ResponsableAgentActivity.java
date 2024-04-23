@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResponsableAgentActivity extends AppCompatActivity {
-    CardView cardHistoriqueAffectation;
+
      private String fullname;
 
     @SuppressLint("MissingInflatedId")
@@ -26,11 +26,11 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_responsable_agent);
 
         // Récupérer l'email de l'intent
-        String userEmail = getIntent().getStringExtra("email");
-        String userName = getIntent().getStringExtra("nom");
-        String userFirstName = getIntent().getStringExtra("prenom");
-        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
-        int idUser = getIntent().getIntExtra("idUser", -1);
+        String userEmail = getIntent().getStringExtra("Mail");
+        String userName = getIntent().getStringExtra("Nom");
+        String userFirstName = getIntent().getStringExtra("Prenom");
+        int idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        int idUser = getIntent().getIntExtra("IdEmployes", -1);
 
 
         // Afficher l'email dans le TextView approprié
@@ -55,16 +55,49 @@ public class ResponsableAgentActivity extends AppCompatActivity {
 */
         CardView cardHistoriqueAffectation = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
+        CardView cardAlertes = findViewById(R.id.cardAlerte);
+        CardView cardNotifications = findViewById(R.id.cardNotifications);
+
 
        // String etablissement = "etablissement";
+
+
+        cardNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ResponsableAgentActivity.this, NotificationActivity.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
+                intent.putExtra("Email", userEmail);
+                startActivity(intent);
+
+            }
+        });
+        cardAlertes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ResponsableAgentActivity.this, AlertesActivity.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
+                intent.putExtra("Mail", userEmail);
+                startActivity(intent);
+
+            }
+        });
         cardHistoriqueAffectation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(ResponsableAgentActivity.this, HistoriqueAffectationsActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", idUser);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
                 startActivity(intent);
 
             }
@@ -75,7 +108,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ResponsableAgentActivity.this, BornesActivity.class);
 
-                intent.putExtra("idEtablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
+                intent.putExtra("Id_Etablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
 
                 // Démarrer l'activité BornesActivity avec l'Intent
                 startActivity(intent);

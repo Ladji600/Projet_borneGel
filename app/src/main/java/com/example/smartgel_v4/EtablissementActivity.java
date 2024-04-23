@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.smartgel_v4.MyEtablissement;
@@ -52,10 +53,10 @@ public class EtablissementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_etablissement);
 
-        userEmail = getIntent().getStringExtra("email");
-        userName = getIntent().getStringExtra("nom");
-       userId = getIntent().getIntExtra("idUser", -1);
-       prenom = getIntent().getStringExtra("prenom");
+        userEmail = getIntent().getStringExtra("Mail");
+        userName = getIntent().getStringExtra("Nom");
+       userId = getIntent().getIntExtra("IdEmployes", -1);
+       prenom = getIntent().getStringExtra("Prenom");
 
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_etablissement);
@@ -81,10 +82,10 @@ public class EtablissementActivity extends AppCompatActivity {
                 // Gérer le clic sur un établissement ici
                 // Vous pouvez démarrer une nouvelle activité ou effectuer toute autre action souhaitée
                 Intent intent = new Intent(EtablissementActivity.this, ResponsableTechActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", userId);
-                intent.putExtra("prenom", prenom);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", userId);
+                intent.putExtra("Prenom", prenom);
 
                 startActivity(intent);
             }
@@ -92,7 +93,7 @@ public class EtablissementActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mEtablissementAdapter);
 
         // Récupérer l'ID de l'utilisateur depuis l'intent
-        userId = getIntent().getIntExtra("idUser", -1);
+        userId = getIntent().getIntExtra("IdEmployes", -1);
         if (userId != -1) {
             // Appel de la méthode pour récupérer les données des établissements depuis l'API
             fetchEtablissementData();
@@ -103,24 +104,24 @@ public class EtablissementActivity extends AppCompatActivity {
 
     private void fetchEtablissementData() {
         // URL de l'API à interroger
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/etablissement?idUser=" + userId;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Etablissement-Appli.php?Id_Employes=" + userId;
 
         // Création de la requête JSON Array GET avec Volley
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
                             // Parcourir le tableau JSON des établissements
-                            JSONArray etablissementsArray = response.getJSONArray("etablissements");
-                            for (int i = 0; i < etablissementsArray.length(); i++) {
-                                JSONObject etablissementObject = etablissementsArray.getJSONObject(i);
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject etablissementObject = response.getJSONObject(i);
 
-                                int idEtablissement = etablissementObject.getInt("idEtablissement");
+                                int idEtablissement = etablissementObject.getInt("IdEtablissement");
                                 String etablissementName = etablissementObject.getString("NomEtablissement");
+                                String addresse = etablissementObject.getString("Address");
 
                                 // Création de l'objet MyEtablissement
-                                MyEtablissement myEtablissement = new MyEtablissement(idEtablissement, etablissementName);
+                                MyEtablissement myEtablissement = new MyEtablissement(idEtablissement, etablissementName, addresse);
 
                                 // Ajout de l'établissement à la liste
                                 mEtablissements.add(myEtablissement);
@@ -144,7 +145,6 @@ public class EtablissementActivity extends AppCompatActivity {
         // Ajouter la requête à la file d'attente de Volley
         Volley.newRequestQueue(this).add(request);
     }
-
     // Interface pour gérer les clics sur les éléments de la liste
     public interface OnItemClickListener {
         void onItemClick(MyEtablissement etablissement);
@@ -191,17 +191,20 @@ public class EtablissementActivity extends AppCompatActivity {
         }
 
         public class EtablissementViewHolder extends RecyclerView.ViewHolder {
-            private TextView idEtablissementTextView, etablissementTextView;
+            private TextView idEtablissementTextView, etablissementTextView, addresseEtablissement;
 
             public EtablissementViewHolder(View itemView) {
                 super(itemView);
                 idEtablissementTextView = itemView.findViewById(R.id.text_id_etablissement);
                 etablissementTextView = itemView.findViewById(R.id.text_etablissement);
+                addresseEtablissement = itemView.findViewById(R.id.text_addresse);
             }
 
             public void bind(MyEtablissement etablissement) {
                 idEtablissementTextView.setText("ID Etablissement : " + etablissement.getIdEtablissement());
                 etablissementTextView.setText("Etablissement : " + etablissement.getEtablissement());
+                addresseEtablissement.setText(("Adresse : " + etablissement.getAddresse()));
+
             }
         }
     }

@@ -1,52 +1,21 @@
 package com.example.smartgel_v4;
 
 public class MyAffectation {
-    private  int idBorne;
-    private int batterie;
-    private int gel;
-    private String heure;
-    private String date;
-    private String salle;
-    private String mission;
 
-    private int idEmploye;
-
-    //Constructeur
-
-
-    public MyAffectation(int idBorne, String salle, int batterie, int gel, String mission, String date, String heure, int idEmploye) {
-        this.idBorne = idBorne;
-        this.batterie = batterie;
-        this.gel = gel;
-        this.heure = heure;
-        this.date = date;
-        this.salle = salle;
-        this.mission = mission;
-        this.idEmploye = idEmploye;
+    public int getIdMission() {
+        return idMission;
     }
 
-    public int getIdBorne() {
-        return idBorne;
+    public void setIdMission(int idMission) {
+        this.idMission = idMission;
     }
 
-    public void setIdBorne(int idBorne) {
-        this.idBorne = idBorne;
+    public String getTypeMission() {
+        return typeMission;
     }
 
-    public int getBatterie() {
-        return batterie;
-    }
-
-    public void setBatterie(int batterie) {
-        this.batterie = batterie;
-    }
-
-    public int getGel() {
-        return gel;
-    }
-
-    public void setGel(int gel) {
-        this.gel = gel;
+    public void setTypeMission(String typeMission) {
+        this.typeMission = typeMission;
     }
 
     public String getHeure() {
@@ -65,25 +34,47 @@ public class MyAffectation {
         this.date = date;
     }
 
-    public String getSalle() {
-        return salle;
+    public int getIdEmploye() {
+        return idEmploye;
     }
 
-    public void setSalle(String salle) {
-        this.salle = salle;
+    public void setIdEmploye(int idEmploye) {
+        this.idEmploye = idEmploye;
     }
 
-    public String getMission() {
-        return mission;
+    public int getIdBorne() {
+        return idBorne;
     }
 
-    public void setMission(String mission) {
-        this.mission = mission;
+    public void setIdBorne(int idBorne) {
+        this.idBorne = idBorne;
     }
 
-    public int getIdEmploye() { return idEmploye; }
+    private int idMission;
+    private String typeMission;
+    private String heure;
+    private String date;
+    private int idEmploye;
+    private  int idBorne;
 
-    public void setIdEmploye(int idEmploye) {this.idEmploye = idEmploye; }
+
+
+
+    //Constructeur
+
+
+    public MyAffectation(int idMission, String typeMission, String heure, String date, int idEmploye, int idBorne) {
+        this.idMission = idMission;
+        this.typeMission = typeMission;
+        this.heure = heure;
+        this.date = date;
+        this.idEmploye = idEmploye;
+        this.idBorne = idBorne;
+
+
+    }
+
+
 
 
 }

@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void callLoginAPI(String email, String password) {
-        String url = "https://c6976853-fd03-45cd-b519-bcd0d86b6d8c.mock.pstmn.io/connexion";
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Connexion2-Appli.php";
         url += "?email=" + email + "&password=" + password;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -63,23 +63,30 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(LoginActivity.this, "Erreur de connexion", Toast.LENGTH_SHORT).show();
+                        Log.d("error", error.getMessage());
+
                     }
                 });
 
         Volley.newRequestQueue(this).add(request);
     }
 
+
     private void handleLoginResponse(JSONObject response) {
         try {
             Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
 
-            int idUser = response.getInt("idUser");
-            String email = response.getString("email");
-         //   String mdp = response.getString("mdp");
-            String prenom = response.getString("prenom");
-            String nom = response.getString("nom");
-          //  int idEtablissement = response.getInt("idEtablissement");
-            int role = response.getInt("role");
+            int idUser = response.getInt("IdEmployes");
+            String nom = response.getString("Nom");
+            String prenom = response.getString("Prenom");
+            String email = response.getString("Mail");
+            String mdp = response.getString("Mot_De_Passe");
+            int role = response.getInt("Id_Role");
+            int idEtablissement = response.getInt("Id_Etablissement");
+
+
+
+           // sendEmail(email, prenom, nom);
 
             Log.d("idUser", "LOgin Id de l'utilisateur : " + idUser);
 
@@ -89,31 +96,31 @@ public class LoginActivity extends AppCompatActivity {
             switch (role) {
                 case 3: // Responsable Technique
                     Intent intentResponsableTech = new Intent(LoginActivity.this, EtablissementActivity.class);
-                    intentResponsableTech.putExtra("idUser", idUser);
-                    intentResponsableTech.putExtra("email", email);
-                    intentResponsableTech.putExtra("nom", nom);
-                    intentResponsableTech.putExtra("prenom", prenom);
+                    intentResponsableTech.putExtra("IdEmployes", idUser);
+                    intentResponsableTech.putExtra("Mail", email);
+                    intentResponsableTech.putExtra("Nom", nom);
+                    intentResponsableTech.putExtra("Prenom", prenom);
 
                     startActivity(intentResponsableTech);
                     break;
                 case 2: // Responsable Agent
                     Intent intentResponsableAgent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
-                    int idEtablissement = response.getInt("idEtablissement");
-                    intentResponsableAgent.putExtra("idUser", idUser);
-                    intentResponsableAgent.putExtra("email", email);
-                    intentResponsableAgent.putExtra("nom", nom);
-                    intentResponsableAgent.putExtra("prenom", prenom);
-                    intentResponsableAgent.putExtra("idEtablissement", idEtablissement);
+                   // int idEtablissement = response.getInt("Id_Etablissement");
+                    intentResponsableAgent.putExtra("IdEmployes", idUser);
+                    intentResponsableAgent.putExtra("Mail", email);
+                    intentResponsableAgent.putExtra("Nom", nom);
+                    intentResponsableAgent.putExtra("Prenom", prenom);
+                    intentResponsableAgent.putExtra("Id_Etablissement", idEtablissement);
                     startActivity(intentResponsableAgent);
                     break;
                 case 1: // Agent
                     Intent intentAgent = new Intent(LoginActivity.this, AgentActivity.class);
-                    idEtablissement = response.getInt("idEtablissement");
-                    intentAgent.putExtra("idUser", idUser);
-                    intentAgent.putExtra("email", email);
-                    intentAgent.putExtra("nom", nom);
-                    intentAgent.putExtra("prenom",prenom);
-                    intentAgent.putExtra("idEtablissement", idEtablissement);
+                  //  idEtablissement = response.getInt("Id_Etablissement");
+                    intentAgent.putExtra("IdEmployes", idUser);
+                    intentAgent.putExtra("Mail", email);
+                    intentAgent.putExtra("Nom", nom);
+                    intentAgent.putExtra("Prenom",prenom);
+                    intentAgent.putExtra("Id_Etablissement", idEtablissement);
                     startActivity(intentAgent);
                     break;
                 default:
@@ -123,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Erreur réponse JSON", Toast.LENGTH_SHORT).show();
+            Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
         }
     }
 }
