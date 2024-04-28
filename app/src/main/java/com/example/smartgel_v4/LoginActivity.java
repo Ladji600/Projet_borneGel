@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = response.getString("Mail");
             String mdp = response.getString("Mot_De_Passe");
             int role = response.getInt("Id_Role");
-            int idEtablissement = response.getInt("Id_Etablissement");
+
 
 
 
@@ -105,22 +105,32 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case 2: // Responsable Agent
                     Intent intentResponsableAgent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
+                    int idEtablissement = response.getInt("Id_Etablissement");
+                    String nomEtablissement = response.getString("NomEtablissement");
+                    String adresse = response.getString("Address");
                    // int idEtablissement = response.getInt("Id_Etablissement");
                     intentResponsableAgent.putExtra("IdEmployes", idUser);
                     intentResponsableAgent.putExtra("Mail", email);
                     intentResponsableAgent.putExtra("Nom", nom);
                     intentResponsableAgent.putExtra("Prenom", prenom);
                     intentResponsableAgent.putExtra("Id_Etablissement", idEtablissement);
+                    intentResponsableAgent.putExtra("NomEtablissement", nomEtablissement);
+                    intentResponsableAgent.putExtra("Address", adresse);
                     startActivity(intentResponsableAgent);
                     break;
                 case 1: // Agent
                     Intent intentAgent = new Intent(LoginActivity.this, AgentActivity.class);
+                     idEtablissement = response.getInt("Id_Etablissement");
+                     nomEtablissement = response.getString("NomEtablissement");
+                     adresse = response.getString("Address");
                   //  idEtablissement = response.getInt("Id_Etablissement");
                     intentAgent.putExtra("IdEmployes", idUser);
                     intentAgent.putExtra("Mail", email);
                     intentAgent.putExtra("Nom", nom);
                     intentAgent.putExtra("Prenom",prenom);
                     intentAgent.putExtra("Id_Etablissement", idEtablissement);
+                    intentAgent.putExtra("NomEtablissement", nomEtablissement);
+                    intentAgent.putExtra("Address", adresse);
                     startActivity(intentAgent);
                     break;
                 default:

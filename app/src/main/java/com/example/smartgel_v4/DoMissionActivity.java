@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -45,8 +46,8 @@ public class DoMissionActivity extends AppCompatActivity {
     private String salleM;
     private String nomEtablissement;
 
- //   private List<NotificationItem> notificationList = new ArrayList<>();
- //   private NotificationAdapter adapter;
+    //   private List<NotificationItem> notificationList = new ArrayList<>();
+    //   private NotificationAdapter adapter;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +71,20 @@ public class DoMissionActivity extends AppCompatActivity {
         adapter = new NotificationAdapter(notificationList);
         recyclerView.setAdapter(adapter);
 */
+
         // Récupération des informations passées depuis l'activité précédente
-        idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
-        idUserActual = getIntent().getIntExtra("idUser", -1);
-        userEmail = getIntent().getStringExtra("email");
-        userName = getIntent().getStringExtra("nom");
-        userFirstName = getIntent().getStringExtra("prenom");
-        idBorneM = getIntent().getIntExtra("idBorne", -1);
-        gelM = getIntent().getIntExtra("gel", -1);
-        batterieM = getIntent().getIntExtra("batterie", -1);
-        salleM = getIntent().getStringExtra("salle");
-        heureM = getIntent().getStringExtra("heure");
-        dateM = getIntent().getStringExtra("date");
-        nomEtablissement = getIntent().getStringExtra("Etablissement");
+        idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        idUserActual = getIntent().getIntExtra("IdEmployes", -1);
+        userEmail = getIntent().getStringExtra("Mail");
+        userName = getIntent().getStringExtra("Nom");
+        userFirstName = getIntent().getStringExtra("Prenom");
+        idBorneM = getIntent().getIntExtra("IdBorne", -1);
+        gelM = getIntent().getIntExtra("Niveau_Gel", -1);
+        batterieM = getIntent().getIntExtra("Niveau_Batterie", -1);
+        salleM = getIntent().getStringExtra("Salle");
+        heureM = getIntent().getStringExtra("Heure");
+        dateM = getIntent().getStringExtra("Date");
+        nomEtablissement = getIntent().getStringExtra("NomEtablissement");
 
         // Mise à jour des TextView avec les données récupérées
         TextView textEtablissement = findViewById(R.id.text_etablissement);
@@ -126,12 +128,12 @@ public class DoMissionActivity extends AppCompatActivity {
                 // Construction de l'objet JSON pour la requête API POST
                 JSONObject requestBody = new JSONObject();
                 try {
-                    requestBody.put("email", selectedUser);
-                    requestBody.put("idborne", idBorneM); // Ajoutez l'ID de la borne correct ici
-                    requestBody.put("etablissement", nomEtablissement);
-                    requestBody.put("idEtablissment", idEtablissement);
-                    requestBody.put("salle", salleM);
-                    requestBody.put("mission", selectedMission);
+                    requestBody.put("Mail", selectedUser);
+                    requestBody.put("IdBorne", idBorneM); // Ajoutez l'ID de la borne correct ici
+                    requestBody.put("NomEtablissement", nomEtablissement);
+                    requestBody.put("Id_Etablissment", idEtablissement);
+                    requestBody.put("Salle", salleM);
+                    requestBody.put("Mission", selectedMission);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,7 +176,7 @@ public class DoMissionActivity extends AppCompatActivity {
     }
 
 
-// Méthode pour ajouter une notification à la liste
+    // Méthode pour ajouter une notification à la liste
  /*   private void addNotification(String title, String message) {
         Intent intent = new Intent(this, NotificationActivity.class);
         startActivity(intent);
@@ -183,9 +185,9 @@ public class DoMissionActivity extends AppCompatActivity {
     private void fetchMissions() {
         // Création d'une liste de missions
         List<String> missionsList = new ArrayList<>();
-        missionsList.add("Changer batterie");
-        missionsList.add("Charger gel");
-        missionsList.add("Changer batterie et gel");
+        missionsList.add("Niveau de batterie");
+        missionsList.add("Niveau de gel");
+        missionsList.add("Niveau de batterie et gel");
 
         // Adapter pour le spinner des missions
         ArrayAdapter<String> missionsAdapter = new ArrayAdapter<>(DoMissionActivity.this,
@@ -197,31 +199,34 @@ public class DoMissionActivity extends AppCompatActivity {
     // Méthode pour récupérer les utilisateurs (agents) depuis l'API
     private void fetchUsers() {
         // URL de l'API pour récupérer les utilisateurs (agents)
-        String url = "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/employes?idEtablissement=" + idEtablissement;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Employes-Agents-Appli.php?id_etablissement" + idEtablissement;
 
         // Requête JSON pour récupérer les utilisateurs (agents)
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONArray usersArray = response.getJSONArray("user");
                             Log.d("Fetch Users", "Response: " + response.toString());
 
-                            // Liste pour stocker les emails des utilisateurs (agents) ayant le rôle 1
-                            List<String> usersList = new ArrayList<>();
+                            // Liste pour stocker les informations des utilisateurs (agents) ayant le rôle 1
+                            List<UserInfo> usersList = new ArrayList<>();
 
                             // Parcours des utilisateurs et ajout à la liste si leur rôle est 1 (agent)
-                            for (int i = 0; i < usersArray.length(); i++) {
-                                JSONObject userObject = usersArray.getJSONObject(i);
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject userObject = response.getJSONObject(i);
+                                int idUser = userObject.getInt("IdEmployes");
                                 int role = userObject.getInt("Id_Role");
-                                if (role == 1) {
-                                    String userEmail = userObject.getString("Mail");
-                                    usersList.add(userEmail);
-                                }
+                                String nom = userObject.getString("Nom");
+                                String prenom = userObject.getString("Prenom");
+                                String mail = userObject.getString("Mail");
+
+
+                                usersList.add(new UserInfo(idUser, nom, prenom, mail, role));
+
                             }
                             // Ajouter un log pour vérifier les données d'utilisateurs récupérées
                             Log.d("Fetch Users", "Données d'utilisateurs récupérées : " + usersList.toString());
@@ -229,13 +234,13 @@ public class DoMissionActivity extends AppCompatActivity {
                             // Vérifiez si des données d'utilisateurs ont été récupérées
                             if (!usersList.isEmpty()) {
                                 // Adapter pour le spinner des utilisateurs
-                                ArrayAdapter<String> usersAdapter = new ArrayAdapter<>(DoMissionActivity.this,
+                                ArrayAdapter<UserInfo> usersAdapter = new ArrayAdapter<>(DoMissionActivity.this,
                                         android.R.layout.simple_spinner_item, usersList);
                                 usersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerUsers.setAdapter(usersAdapter);
                             } else {
                                 // Gérer le cas où aucune donnée d'utilisateur n'est disponible
-                                Log.d("Fetch Users", "Aucun utilisateur disponible");
+                                Log.d("Fetch Users", "Aucun utilisateur avec le rôle 1 disponible");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -249,6 +254,6 @@ public class DoMissionActivity extends AppCompatActivity {
                     }
                 });
 
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
+        Volley.newRequestQueue(this).add(request);
     }
 }

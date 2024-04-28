@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class AgentActivity extends AppCompatActivity {
 
     private String fullname;
+    private TextView nomEtablissementText;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +26,18 @@ public class AgentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_agent);
 
         // Récupérer l'email de l'intent
-        String userEmail = getIntent().getStringExtra("email");
-        String userName = getIntent().getStringExtra("nom");
-        String userFirstName = getIntent().getStringExtra("prenom");
-        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
-        int idUser = getIntent().getIntExtra("idUser", -1 );
+        String userEmail = getIntent().getStringExtra("Mail");
+        String userName = getIntent().getStringExtra("Nom");
+        String userFirstName = getIntent().getStringExtra("Prenom");
+        int idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        int idUser = getIntent().getIntExtra("IdEmployes", -1 );
+        String nomEtablissement = getIntent().getStringExtra("NomEtablissement");
+        String adresse = getIntent().getStringExtra("Address");
 
         Log.d("idUser", "Agent Activity Id de l'utilisateur : " + idUser);
+
+        nomEtablissementText = findViewById(R.id.nomEtablissementTextView);
+        nomEtablissementText.setText(nomEtablissement);
 
         // Afficher l'email dans le TextView approprié
         TextView userNameTextView = findViewById(R.id.userAgentTextView);
@@ -63,10 +69,12 @@ public class AgentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AgentActivity.this, MissionNotifsActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", idUser);
-                intent.putExtra("prenom", userFirstName);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 Log.d("idUser", "Intent Activity Id de l'utilisateur : " + idUser);
                 startActivity(intent);
             }
@@ -76,11 +84,13 @@ public class AgentActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(AgentActivity.this, AgentHistoriqueAffectationsActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", idUser);
-                intent.putExtra("prenom", userFirstName);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
                 Log.d("idUser", "Intent Activity Id de l'utilisateur : " + idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 startActivity(intent);
 
             }
@@ -91,10 +101,12 @@ public class AgentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AgentActivity.this, BornesActivity.class);
 
-                intent.putExtra("idEtablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
-                intent.putExtra("nom", userName);
-                intent.putExtra("idUser", idUser);
-                intent.putExtra("prenom", userFirstName);
+                intent.putExtra("Id_Etablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
+                intent.putExtra("Nom", userName);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 // Démarrer l'activité BornesActivity avec l'Intent
                 startActivity(intent);
 

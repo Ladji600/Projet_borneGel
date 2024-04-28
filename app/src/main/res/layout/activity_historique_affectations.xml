@@ -9,12 +9,14 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardAffectation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         android:backgroundTint="#000000">
+
 
         <TextView
             android:id="@+id/AffectationTitletextView"
@@ -27,14 +29,24 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/text_TitleEtablissement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eta"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/cardAffectation"
+        android:textSize="20sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_affectation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+
         />
 
     <ImageView

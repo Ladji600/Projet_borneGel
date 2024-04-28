@@ -18,7 +18,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -28,14 +27,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoriqueAffectationsActivity extends AppCompatActivity {
+public class ResponsableTechniqueHistoriqueMission extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private int idEtablissement;
+    private int idEtablissementIntent;
     private String nomUser;
     private int idUser;
     private AffectationsAdapter mAffectationsAdapter;
     private List<MyAffectation> mAffectations;
+    private TextView nomEtablissementText;
+    private String nomEtablissement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +44,20 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_historique_affectations);
 
         // Récupérer l'établissement de l'utilisateur depuis l'Intent
-        idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+
         nomUser = getIntent().getStringExtra("Nom");
         idUser = getIntent().getIntExtra("IdEmployes", -1);
+        idEtablissementIntent = getIntent().getIntExtra("IdEtablissement", -1);
+        nomEtablissement = getIntent().getStringExtra("NomEtablissement");
 
 
-        // Afficher les valeurs récupérées dans la console de débogage
-        Log.d("IntentData", "Nom : " + nomUser);
-        Log.d("IntentData", "Id_Etablissement : " + idEtablissement);
-        Log.d("IntentData", "IdEmployes : " + idUser);
+
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_affectation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        nomEtablissementText = findViewById(R.id.text_TitleEtablissement);
+        nomEtablissementText.setText(nomEtablissement);
 
         // Initialisation de la liste d'affectations
         mAffectations = new ArrayList<>();
@@ -71,10 +74,10 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
         });
 
         // Récupérer l'établissement sélectionné par l'utilisateur
-        if (idEtablissement != -1) {
+        if (idEtablissementIntent!= -1) {
             // Appel de la méthode pour récupérer les données des affectations depuis l'API
             fetchAffectationsData();
-            Log.e("iduser", "ID user dans la condition" + idUser);
+            Log.e("iduser", "ID user dans la condition" + idEtablissementIntent);
         } else {
             Toast.makeText(this, "Erreur lors de la récupération de l'établissement", Toast.LENGTH_SHORT).show();
             Log.e("Erreur", "ID user invalide");
@@ -91,8 +94,8 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
 
     private void fetchAffectationsData() {
         // URL de l'API à interroger
-        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Historique-Mission-Appli.php?Id_Etablissement="+idEtablissement;
-        Log.d("idUser", "Valeur de idUser dans le fetch : " + idEtablissement);
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Historique-Mission-Appli.php?Id_Etablissement=" + idEtablissementIntent;
+        Log.d("idUser", "Valeur de idUser dans le fetch : " + idEtablissementIntent);
         Log.d("API_Request", "URL de l'API : " + url);
 
 
@@ -186,6 +189,8 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
 
             private TextView idEmploye;
 
+            private TextView niveauGel;
+            private TextView niveauBatterie;
             private TextView salle;
 
             public AffectationsViewHolder(View itemView) {

@@ -39,6 +39,10 @@ public class EtablissementActivity extends AppCompatActivity {
 
     private String prenom;
     private String userEmail;
+    private String etablissementName;
+    private String addresse;
+
+    private int idEtablissement;
     private EtablissementAdapter mEtablissementAdapter;
     private List<MyEtablissement> mEtablissements;
     private int userId; // Déclaration de la variable userId
@@ -52,12 +56,21 @@ public class EtablissementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_etablissement);
-
         userEmail = getIntent().getStringExtra("Mail");
-        userName = getIntent().getStringExtra("Nom");
+       userName = getIntent().getStringExtra("Nom");
        userId = getIntent().getIntExtra("IdEmployes", -1);
        prenom = getIntent().getStringExtra("Prenom");
 
+
+
+        Log.d("IntentData", "Email: " + userEmail);
+        Log.d("IntentData", "Nom: " + userName);
+        Log.d("IntentData", "IdEmployes: " + userId);
+        Log.d("IntentData", "Prenom: " + prenom);
+        Log.d("EtablissementActivity", "NomEtablissement: " + etablissementName);
+        Log.d("EtablissementActivity", "IdEtablissement: " + idEtablissement);
+
+        Log.d("idUser", "Valeur de idUser dans le REsponsableActivity : " + userId);
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_etablissement);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,14 +91,19 @@ public class EtablissementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(MyEtablissement etablissement) {
 
-                int idEtablissement = etablissement.getIdEtablissement();
+               idEtablissement = etablissement.getIdEtablissement();
+                // Récupérer les informations de l'établissement cliqué
+               etablissementName = etablissement.getEtablissement();
+               addresse = etablissement.getAddresse();
                 // Gérer le clic sur un établissement ici
                 // Vous pouvez démarrer une nouvelle activité ou effectuer toute autre action souhaitée
                 Intent intent = new Intent(EtablissementActivity.this, ResponsableTechActivity.class);
                 intent.putExtra("Nom", userName);
-                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEtablissement", idEtablissement);
                 intent.putExtra("IdEmployes", userId);
                 intent.putExtra("Prenom", prenom);
+                intent.putExtra("NomEtablissement", etablissementName);
+                intent.putExtra("Address",addresse);
 
                 startActivity(intent);
             }
@@ -113,12 +131,13 @@ public class EtablissementActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             // Parcourir le tableau JSON des établissements
+                            Log.d("API_Response", "Réponse JSON : " + response.toString());
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject etablissementObject = response.getJSONObject(i);
 
-                                int idEtablissement = etablissementObject.getInt("IdEtablissement");
-                                String etablissementName = etablissementObject.getString("NomEtablissement");
-                                String addresse = etablissementObject.getString("Address");
+                                 idEtablissement = etablissementObject.getInt("IdEtablissement");
+                                 etablissementName = etablissementObject.getString("NomEtablissement");
+                                 addresse = etablissementObject.getString("Address");
 
                                 // Création de l'objet MyEtablissement
                                 MyEtablissement myEtablissement = new MyEtablissement(idEtablissement, etablissementName, addresse);

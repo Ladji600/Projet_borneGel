@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -33,6 +34,7 @@ public class BornesActivity extends AppCompatActivity {
     private List<MyBorne> mBornes;
     private int idEtablissement;
 
+    private TextView nomEtablissementText;
     private String nomEtablissement;
 
     //private String nameEtablissement;
@@ -52,8 +54,21 @@ public class BornesActivity extends AppCompatActivity {
         mBorneAdapter = new BorneAdapter(mBornes);
         mRecyclerView.setAdapter(mBorneAdapter);
 
-        // Récupération de l'ID de l'établissement depuis l'intent
-        idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
+        String userName = getIntent().getStringExtra("Nom");
+        String userFirstName = getIntent().getStringExtra("Prenom");
+        String nomEtablissement =getIntent().getStringExtra("NomEtablissement");
+
+        nomEtablissementText = findViewById(R.id.etablissementTittleTextView);
+        nomEtablissementText.setText(nomEtablissement);
+
+        idEtablissement = -1; // Initialisation à une valeur par défaut
+        if (getIntent().hasExtra("IdEtablissement")) {
+            // Si l'intent contient l'extra avec la clé "idEtablissement"
+            idEtablissement = getIntent().getIntExtra("IdEtablissement", -1);
+        } else if (getIntent().hasExtra("Id_Etablissement")) {
+            // Si l'intent contient l'extra avec la clé "Id_Etablissement"
+            idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        }
 
         if (idEtablissement != -1) {
             // Utilisation de l'ID de l'établissement pour récupérer les données des bornes depuis l'API
@@ -62,9 +77,6 @@ public class BornesActivity extends AppCompatActivity {
             // Gérer le cas où l'ID de l'établissement n'est pas disponible
         }
 
-
-      //  TextView EtablissementTittleTextView = findViewById(R.id.etablissementTittleTextView);
-       // EtablissementTittleTextView.setText(etanlissementName);
 
         // Gestion du retour en arrière lorsque l'image est cliquée
         findViewById(R.id.icon_back_bornes).setOnClickListener(new View.OnClickListener() {
@@ -78,42 +90,33 @@ public class BornesActivity extends AppCompatActivity {
     // Méthode pour récupérer les données des bornes depuis l'API
     private void fetchBornesData(int idEtablissement) {
         // URL de l'API à interroger
-        String url = "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/dashboard?idEtablissement=" + idEtablissement;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Bornes-Appli.php?id_etablissement=" + idEtablissement;
 
         // Création de la requête JSON Object GET avec Volley
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            // Extraction du tableau "Bornes" de l'objet de réponse
-                             nomEtablissement = response.getString("Etablissement");
-
-                            TextView etablissementTittleTextView = findViewById(R.id.etablissementTittleTextView);
-                            etablissementTittleTextView.setText(nomEtablissement);
-
-                            JSONArray bornesArray = response.getJSONArray("Bornes");
 
                             // Parcours du tableau JSON des bornes
-                            for (int i = 0; i < bornesArray.length(); i++) {
-                                JSONObject borneObject = bornesArray.getJSONObject(i);
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject borneObject = response.getJSONObject(i);
 
                                 // Extraction des données de chaque borne
-                                int idBorne = borneObject.getInt("idBorne");
-                                int gel = borneObject.getInt("gel");
-                                int batterie = borneObject.getInt("batterie");
-                                String salle = borneObject.getString("salle");
-                                String heure = borneObject.getString("heure");
-                                String date = borneObject.getString("date");
+                                int idBorne = borneObject.getInt("IdBorne");
+                                int niveauGel = borneObject.getInt("Niveau_Gel");
+                                int niveauBatterie = borneObject.getInt("Niveau_Batterie");
+                                String salle = borneObject.getString("Salle");
+                                String heure = borneObject.getString("Heure");
+                                String date = borneObject.getString("Date");
+
 
                                 // Création de l'objet MyBorne
-                                MyBorne borne = new MyBorne(idBorne, gel, batterie, salle, heure, date);
+                                MyBorne borne = new MyBorne(idBorne, niveauGel, niveauBatterie, salle, heure, date);
 
                                 // Ajout de la borne à la liste
                                 mBornes.add(borne);
-                                Log.d("API Response", "Response: " + response.toString());
-                               // Log.d("ETABLISSEMENT", "Nom de l'établissement : " + nomEtablissement); // Ajoutez cette ligne
-
                             }
 
                             // Rafraîchissement de la RecyclerView
@@ -123,6 +126,7 @@ public class BornesActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
                 },
                 new Response.ErrorListener() {
                     @Override

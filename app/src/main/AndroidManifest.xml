@@ -65,8 +65,13 @@
             android:name=".HistoriqueAffectationsActivity"
             android:exported="false" />
         <activity
+            android:name=".ResponsableTechniqueHistoriqueMission"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true" >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

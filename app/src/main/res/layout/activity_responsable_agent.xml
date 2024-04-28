@@ -19,16 +19,26 @@
 
 
 
-
     <TextView
-        android:id="@+id/userRespAgentTextView"
+        android:id="@+id/nomEtablissementTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:layout_below="@+id/titleHome"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="35dp"
+        />
+    <TextView
+        android:id="@+id/userRespAgentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/nomEtablissementTextView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        />
 
     <ImageView
         android:id="@+id/imgLogOut"

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 public class ResponsableAgentActivity extends AppCompatActivity {
 
      private String fullname;
+     private String nomEtablissemnetText;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,12 +33,17 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         String userFirstName = getIntent().getStringExtra("Prenom");
         int idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
         int idUser = getIntent().getIntExtra("IdEmployes", -1);
-
+        String nomEtablissement = getIntent().getStringExtra("NomEtablissement");
+        String adresse = getIntent().getStringExtra("Address");
+        Log.d("idUser", "Valeur de idUser dans le REsponsableActivity : " + idUser);
 
         // Afficher l'email dans le TextView approprié
         TextView userNameTextView = findViewById(R.id.userRespAgentTextView);
         fullname = userName + " " + userFirstName;
         userNameTextView.setText(fullname);
+
+        TextView nomEtablissementText = findViewById(R.id.nomEtablissementTextView);
+        nomEtablissementText.setText(nomEtablissement);
 
         // Ajouter la fonctionnalité de déconnexion
         ImageView imgDeconnexion = findViewById(R.id.imgLogOut);
@@ -72,6 +79,8 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 intent.putExtra("IdEmployes", idUser);
                 intent.putExtra("Prenom", userFirstName);
                 intent.putExtra("Email", userEmail);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 startActivity(intent);
 
             }
@@ -86,6 +95,8 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 intent.putExtra("IdEmployes", idUser);
                 intent.putExtra("Prenom", userFirstName);
                 intent.putExtra("Mail", userEmail);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 startActivity(intent);
 
             }
@@ -98,6 +109,8 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 intent.putExtra("Nom", userName);
                 intent.putExtra("Id_Etablissement", idEtablissement);
                 intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 startActivity(intent);
 
             }
@@ -108,7 +121,11 @@ public class ResponsableAgentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ResponsableAgentActivity.this, BornesActivity.class);
 
-                intent.putExtra("Id_Etablissement", idEtablissement); // Remplacez etablissementId par l'identifiant réel de l'établissement
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse); // Remplacez etablissementId par l'identifiant réel de l'établissement
 
                 // Démarrer l'activité BornesActivity avec l'Intent
                 startActivity(intent);

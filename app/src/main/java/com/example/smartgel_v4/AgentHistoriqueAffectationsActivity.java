@@ -37,6 +37,7 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
     private int idEtablissement;
     private AffectationsAdapter mAffectationsAdapter;
     private List<MyAffectation> mAffectations;
+    private TextView nomEtablissementText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,14 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_historique_affectations);
 
         // Récupérer l'id de l'utilisateur depuis l'Intent
-        idUser = getIntent().getIntExtra("IdEmployes", -1);
-        int idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        idUser = getIntent().getIntExtra("IdEmployes",-1);
+        idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
         String userName = getIntent().getStringExtra("Nom");
         String userFirstName = getIntent().getStringExtra("Prenom");
+        String nomEtablissement =getIntent().getStringExtra("NomEtablissement");
 
+        nomEtablissementText = findViewById(R.id.text_TitleEtablissement);
+        nomEtablissementText.setText(nomEtablissement);
 
         Log.d("idUser", "Id de l'utilisateur : " + idUser);
         // Initialisation de la RecyclerView
@@ -82,7 +86,7 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
     private void fetchAffectationsData() {
         // URL de l'API à interroger
         String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Historique-Mission-Appli.php";
-        url += "?id_employes=" + idEtablissement;
+        url += "?Id_Etablissement=" + idEtablissement;
 
         // Création de la requête JSON Array GET avec Volley
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -101,14 +105,19 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
                                 String date = affectationObject.getString("Date");
                                 int idEmploye = affectationObject.getInt("Id_Employes");
                                 int idBorne = affectationObject.getInt("Id_Borne");
+                                String salle = affectationObject.getString("Salle");
+                                int idEta = affectationObject.getInt("Id_Etablissement");
 
                                 // Vérifier si l'idEmploye correspond à l'idUser
                                 if (idEmploye == idUser) {
-                                    // Création de l'objet MyAffectation
-                                    MyAffectation myAffectation = new MyAffectation(idMission, typemission, heure, date, idEmploye, idBorne);
+                                    // Vérifier si l'établissement de la mission correspond à l'établissement de l'agent
+                                    if (idEta == idEtablissement) {
+                                        // Création de l'objet MyAffectation
+                                        MyAffectation myAffectation = new MyAffectation(idMission, typemission, heure, date, idEmploye, idBorne, salle, idEta);
 
-                                    // Ajout de l'affectation à la liste
-                                    mAffectations.add(myAffectation);
+                                        // Ajout de l'affectation à la liste
+                                        mAffectations.add(myAffectation);
+                                    }
                                 }
                             }
 
@@ -118,6 +127,7 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -167,6 +177,8 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
 
             private TextView idEmploye;
 
+            private TextView salle;
+
             public AffectationsViewHolder(View itemView) {
                 super(itemView);
                 idBorneTextView = itemView.findViewById(R.id.text_id_borne);
@@ -175,6 +187,7 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
                 heureTextView = itemView.findViewById(R.id.text_heure);
                 idEmploye = itemView.findViewById(R.id.text_id_employe);
                 idMission = itemView.findViewById(R.id.text_id_mission);
+                salle = itemView.findViewById(R.id.text_salle);
             }
 
             public void bind(MyAffectation affectation) {
@@ -184,6 +197,8 @@ public class AgentHistoriqueAffectationsActivity extends AppCompatActivity {
                 heureTextView.setText("Heure : " + affectation.getHeure());
                 idEmploye.setText("Id Employé :" + affectation.getIdEmploye());
                 typemissionTextView.setText("Mission :"+ affectation.getTypeMission());
+                salle.setText("Salle :" + affectation.getSalle());
+
             }
         }
     }

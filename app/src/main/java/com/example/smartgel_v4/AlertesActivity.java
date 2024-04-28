@@ -38,8 +38,9 @@ public class AlertesActivity extends AppCompatActivity {
     private int idUser;
     private String userFirstName;
     private String userEmail;
-  //  private String nomEtablissement;
-  private String etablissement;
+    private String nomEtablissement;
+
+  private TextView nomEtablissementText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,14 @@ public class AlertesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alertes);
 
         // Récupération des données de l'utilisateur depuis l'intent
-        userName = getIntent().getStringExtra("nom");
-        idUser = getIntent().getIntExtra("idUser", -1);
-        userFirstName = getIntent().getStringExtra("prenom");
-        userEmail = getIntent().getStringExtra("email");
+        userName = getIntent().getStringExtra("Nom");
+        idUser = getIntent().getIntExtra("IdEmployes", -1);
+        userFirstName = getIntent().getStringExtra("Prenom");
+        userEmail = getIntent().getStringExtra("Email");
+        nomEtablissement =getIntent().getStringExtra("NomEtablissement");
+
+        nomEtablissementText = findViewById(R.id.etablissementTextView);
+        nomEtablissementText.setText(nomEtablissement);
 
         // Mise à jour du TextView avec le nom complet de l'utilisateur
         TextView userNameTextView = findViewById(R.id.nomUtilisateurTextView);
@@ -61,75 +66,49 @@ public class AlertesActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycle_view_alerte);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Dans la méthode onCreate() après la création de la RecyclerView
+        mAlertes = new ArrayList<>();
+
         // Récupération de l'ID de l'établissement depuis l'intent
-        idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
+        idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
         if (idEtablissement != -1) {
             // Utilisation de l'ID de l'établissement pour récupérer les données des alertes depuis l'API
             fetchDataFromAPI(idEtablissement);
             // Appel de la méthode pour récupérer le nom de l'établissement
-            fetchEtablissementName(idEtablissement);
         } else {
             // Gérer le cas où l'ID de l'établissement n'est pas disponible
         }
     }
 
     // Méthode pour récupérer le nom de l'établissement depuis l'API
-    private void fetchEtablissementName(int idEtablissement) {
-        String url = "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/dashboard?idEtablissement=" + idEtablissement;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                           etablissement = response.getString("Etablissement");
-                            // Mettre à jour le TextView avec le nom de l'établissement
-                            TextView etablissementTextView = findViewById(R.id.etablissementTextView);
-                            etablissementTextView.setText(etablissement);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("API Error", "Erreur : " + error.getMessage(), error);
-                    }
-                });
-
-        // Ajouter la requête à la file d'attente de Volley
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
 
     // Méthode pour récupérer les données des alertes depuis l'API
     private void fetchDataFromAPI(int idEtablissement) {
-        String url = "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/alerts?idEtablissement=" + idEtablissement;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Alertes-Appli.php?id_etablissement=" + idEtablissement;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONArray alertesArray = response.getJSONArray("alertes");
-                            mAlertes = new ArrayList<>();
+
                             // Parcourir les données de l'API et ajouter à la liste
-                            for (int i = 0; i < alertesArray.length(); i++) {
-                                JSONObject alerteObject = alertesArray.getJSONObject(i);
-                                int idBorne = alerteObject.getInt("idBorne");
-                                String salle = alerteObject.getString("salle");
-                                int batterie = alerteObject.getInt("batterie");
-                                int gel = alerteObject.getInt("gel");
-                                String date = alerteObject.getString("date");
-                                String heure = alerteObject.getString("heure");
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject alerteObject = response.getJSONObject(i);
+
+                                int idBorne = alerteObject.getInt("IdBorne");
+                                int gel = alerteObject.getInt("Niveau_Gel");
+                                int batterie = alerteObject.getInt("Niveau_Batterie");
+                                String heure = alerteObject.getString("Heure");
+                                String salle = alerteObject.getString("Salle");
+                                String date = alerteObject.getString("Date");
+                                int idEta = alerteObject.getInt("Id_Etablissement");
                                 // Créer un objet MyAlerte
-                                MyAlerte alerte = new MyAlerte(idBorne, salle, batterie, gel, date, heure);
+                                MyAlerte alerte = new MyAlerte(idBorne, gel, batterie, salle, heure, date, idEta);
                                 // Ajouter l'alerte à la liste
                                 mAlertes.add(alerte);
                             }
@@ -148,7 +127,7 @@ public class AlertesActivity extends AppCompatActivity {
                 });
 
         // Ajouter la requête à la file d'attente de Volley
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
+        Volley.newRequestQueue(this).add(request);
     }
 
     // Adapter pour Alertes
@@ -209,18 +188,18 @@ public class AlertesActivity extends AppCompatActivity {
                         Intent intent = new Intent(AlertesActivity.this, DoMissionActivity.class);
 
                         // Ajout des données à passer à DoMissionActivity
-                        intent.putExtra("idUser", idUser);
-                        intent.putExtra("email", userEmail);
-                        intent.putExtra("nom", userName);
-                        intent.putExtra("prenom", userFirstName);
-                        intent.putExtra("idEtablissement", idEtablissement);
-                        intent.putExtra("idBorne", alerte.getIdBorne());
-                        intent.putExtra("gel", alerte.getGel());
-                        intent.putExtra("batterie", alerte.getBatterie());
-                        intent.putExtra("salle", alerte.getSalle());
-                        intent.putExtra("heure", alerte.getHeure());
-                        intent.putExtra("date", alerte.getDate());
-                        intent.putExtra("Etablissement",etablissement );
+                        intent.putExtra("IdEmployes", idUser);
+                        intent.putExtra("Mail", userEmail);
+                        intent.putExtra("Nom", userName);
+                        intent.putExtra("Prenom", userFirstName);
+                        intent.putExtra("Id_Etablissement", idEtablissement);
+                        intent.putExtra("IdBorne", alerte.getIdBorne());
+                        intent.putExtra("Niveau_Gel", alerte.getGel());
+                        intent.putExtra("Niveau_Batterie", alerte.getBatterie());
+                        intent.putExtra("Salle", alerte.getSalle());
+                        intent.putExtra("Heure", alerte.getHeure());
+                        intent.putExtra("Date", alerte.getDate());
+                        intent.putExtra("NomEtablissement",nomEtablissement );
                         startActivity(intent); // Démarrage de DoMissionActivity
                     }
                 });

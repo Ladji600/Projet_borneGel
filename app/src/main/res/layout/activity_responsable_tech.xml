@@ -18,14 +18,26 @@
         android:layout_marginTop="50dp"/>
 
     <TextView
-        android:id="@+id/userRespTechTextView"
+        android:id="@+id/nomEtablissementTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:layout_below="@+id/titleHome"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/userRespTechTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/nomEtablissementTextView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        />
     <ImageView
         android:id="@+id/imgRetourRespTech"
         android:layout_width="40dp"

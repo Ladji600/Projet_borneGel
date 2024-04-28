@@ -15,6 +15,9 @@ public class ResponsableTechActivity extends AppCompatActivity {
    // CardView cardOneBorne;
     CardView cardAffectationList;
     private String fullname;
+    private TextView nomEtablissementText;
+
+    CardView cardHistoriqueList;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -24,10 +27,12 @@ public class ResponsableTechActivity extends AppCompatActivity {
 
         // Récupérer l'email de l'intent
      //   String userEmail = getIntent().getStringExtra("email");
-        int idEtablissement = getIntent().getIntExtra("idEtablissement", -1);
-        int idUser = getIntent().getIntExtra("idUser", -1);
-        String userName = getIntent().getStringExtra("nom");
-        String userFirstName = getIntent().getStringExtra("prenom");
+        int idEtablissement = getIntent().getIntExtra("IdEtablissement", -1);
+        int idUser = getIntent().getIntExtra("IdEmployes", -1);
+        String userName = getIntent().getStringExtra("Nom");
+        String userFirstName = getIntent().getStringExtra("Prenom");
+        String nomEtablissement =getIntent().getStringExtra("NomEtablissement");
+        String adresse = getIntent().getStringExtra("Address");
 
 
         // Afficher l'email dans le TextView approprié
@@ -37,6 +42,9 @@ public class ResponsableTechActivity extends AppCompatActivity {
         userNameTextView.setText(fullname);
         // Ajouter la fonctionnalité de déconnexion
         ImageView imgDeconnexion = findViewById(R.id.imgLogOut);
+
+        nomEtablissementText = findViewById(R.id.nomEtablissementTextView);
+        nomEtablissementText.setText(nomEtablissement);
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,17 +71,21 @@ public class ResponsableTechActivity extends AppCompatActivity {
 */
         // cardOneBorne = findViewById(R.id.cardOneBorne);
          cardBornes = findViewById(R.id.cardBornes);
-         cardAffectationList = findViewById(R.id.cardHistorique);
+         cardAffectationList = findViewById(R.id.cardAffectation);
+         cardHistoriqueList = findViewById(R.id.cardHistorique);
 
 
-        cardAffectationList.setOnClickListener(new View.OnClickListener() {
+        cardHistoriqueList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(ResponsableTechActivity.this, HistoriqueAffectationsActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", idUser);
+                Intent intent = new Intent(ResponsableTechActivity.this, ResponsableTechniqueHistoriqueMission.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("IdEtablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+
                 startActivity(intent);
 
             }
@@ -83,9 +95,11 @@ public class ResponsableTechActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ResponsableTechActivity.this, BornesActivity.class);
-                intent.putExtra("nom", userName);
-                intent.putExtra("idEtablissement", idEtablissement);
-                intent.putExtra("idUser", idUser);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("IdEtablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
                 startActivity(intent);
             }
         });
