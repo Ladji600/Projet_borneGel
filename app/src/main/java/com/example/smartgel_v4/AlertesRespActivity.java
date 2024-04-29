@@ -1,12 +1,10 @@
 package com.example.smartgel_v4;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -29,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlertesActivity extends AppCompatActivity {
+public class AlertesRespActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private List<MyAlerte> mAlertes;
@@ -41,22 +38,24 @@ public class AlertesActivity extends AppCompatActivity {
     private String userEmail;
     private String nomEtablissement;
 
-  private TextView nomEtablissementText;
+    private TextView nomEtablissementText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alertes);
+        setContentView(R.layout.activity_alertes_resp);
 
         // Récupération des données de l'utilisateur depuis l'intent
         userName = getIntent().getStringExtra("Nom");
         idUser = getIntent().getIntExtra("IdEmployes", -1);
         userFirstName = getIntent().getStringExtra("Prenom");
         userEmail = getIntent().getStringExtra("Email");
-        nomEtablissement =getIntent().getStringExtra("NomEtablissement");
+        nomEtablissement = getIntent().getStringExtra("NomEtablissement");
 
+        // Initialisation du TextView pour afficher le nom de l'établissement
         nomEtablissementText = findViewById(R.id.etablissementTextView);
         nomEtablissementText.setText(nomEtablissement);
+
 
         ImageView imgRetour = findViewById(R.id.icon_back);
 // Ajouter un OnClickListener pour l'image de retour
@@ -66,31 +65,23 @@ public class AlertesActivity extends AppCompatActivity {
                 finish();
             }
         });
-        // Mise à jour du TextView avec le nom complet de l'utilisateur
-        TextView userNameTextView = findViewById(R.id.nomUtilisateurTextView);
-        String fullName = userName + " " + userFirstName;
-        userNameTextView.setText(fullName);
 
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_alerte);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Dans la méthode onCreate() après la création de la RecyclerView
+        // Initialisation de la liste des alertes
         mAlertes = new ArrayList<>();
 
         // Récupération de l'ID de l'établissement depuis l'intent
-        idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
+        idEtablissement = getIntent().getIntExtra("IdEtablissement", -1);
         if (idEtablissement != -1) {
             // Utilisation de l'ID de l'établissement pour récupérer les données des alertes depuis l'API
             fetchDataFromAPI(idEtablissement);
-            // Appel de la méthode pour récupérer le nom de l'établissement
         } else {
             // Gérer le cas où l'ID de l'établissement n'est pas disponible
         }
     }
-
-    // Méthode pour récupérer le nom de l'établissement depuis l'API
-
 
     // Méthode pour récupérer les données des alertes depuis l'API
     private void fetchDataFromAPI(int idEtablissement) {
@@ -104,7 +95,6 @@ public class AlertesActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-
                             // Parcourir les données de l'API et ajouter à la liste
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject alerteObject = response.getJSONObject(i);
@@ -116,11 +106,14 @@ public class AlertesActivity extends AppCompatActivity {
                                 String salle = alerteObject.getString("Salle");
                                 String date = alerteObject.getString("Date");
                                 int idEta = alerteObject.getInt("Id_Etablissement");
+
                                 // Créer un objet MyAlerte
                                 MyAlerte alerte = new MyAlerte(idBorne, gel, batterie, salle, heure, date, idEta);
                                 // Ajouter l'alerte à la liste
                                 mAlertes.add(alerte);
                             }
+
+                            // Initialisation de l'adapter avec les alertes récupérées
                             mAlertesAdapter = new AlertesAdapter(mAlertes);
                             mRecyclerView.setAdapter(mAlertesAdapter);
                         } catch (JSONException e) {
@@ -151,7 +144,7 @@ public class AlertesActivity extends AppCompatActivity {
         @NonNull
         @Override
         public AlertesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alertes, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alertes_resp, parent, false);
             return new AlertesViewHolder(view);
         }
 
@@ -168,7 +161,6 @@ public class AlertesActivity extends AppCompatActivity {
 
         public class AlertesViewHolder extends RecyclerView.ViewHolder {
             private TextView idBorneTextView, batterieTextView, gelTextView, heureTextView, dateTextView, salleTextView;
-            private Button btnAffectation;
 
             public AlertesViewHolder(View itemView) {
                 super(itemView);
@@ -178,7 +170,6 @@ public class AlertesActivity extends AppCompatActivity {
                 gelTextView = itemView.findViewById(R.id.text_gel);
                 heureTextView = itemView.findViewById(R.id.text_heure);
                 dateTextView = itemView.findViewById(R.id.text_date);
-                btnAffectation = itemView.findViewById(R.id.button_appeler_affectation);
             }
 
             public void bind(MyAlerte alerte) {
@@ -188,30 +179,6 @@ public class AlertesActivity extends AppCompatActivity {
                 gelTextView.setText("Niveau de gel : " + alerte.getGel());
                 heureTextView.setText("Heure : " + alerte.getHeure());
                 dateTextView.setText("Date : " + alerte.getDate());
-
-                // Définir le click listener pour le bouton dans onBindViewHolder()
-                btnAffectation.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Création de l'intent pour passer à DoMissionActivity
-                        Intent intent = new Intent(AlertesActivity.this, DoMissionActivity.class);
-
-                        // Ajout des données à passer à DoMissionActivity
-                        intent.putExtra("IdEmployes", idUser);
-                        intent.putExtra("Mail", userEmail);
-                        intent.putExtra("Nom", userName);
-                        intent.putExtra("Prenom", userFirstName);
-                        intent.putExtra("Id_Etablissement", idEtablissement);
-                        intent.putExtra("IdBorne", alerte.getIdBorne());
-                        intent.putExtra("Niveau_Gel", alerte.getGel());
-                        intent.putExtra("Niveau_Batterie", alerte.getBatterie());
-                        intent.putExtra("Salle", alerte.getSalle());
-                        intent.putExtra("Heure", alerte.getHeure());
-                        intent.putExtra("Date", alerte.getDate());
-                        intent.putExtra("NomEtablissement",nomEtablissement );
-                        startActivity(intent); // Démarrage de DoMissionActivity
-                    }
-                });
             }
         }
     }

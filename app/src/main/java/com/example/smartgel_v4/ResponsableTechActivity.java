@@ -18,6 +18,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
     private TextView nomEtablissementText;
 
     CardView cardHistoriqueList;
+    CardView cardAlerteList;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -71,10 +72,25 @@ public class ResponsableTechActivity extends AppCompatActivity {
 */
         // cardOneBorne = findViewById(R.id.cardOneBorne);
          cardBornes = findViewById(R.id.cardBornes);
-         cardAffectationList = findViewById(R.id.cardAffectation);
+         cardAlerteList = findViewById(R.id.cardAlerte);
          cardHistoriqueList = findViewById(R.id.cardHistorique);
 
 
+
+        cardAlerteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResponsableTechActivity.this, AlertesRespActivity.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("IdEtablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+
+                startActivity(intent);
+
+            }
+        });
         cardHistoriqueList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

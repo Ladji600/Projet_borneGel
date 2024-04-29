@@ -5,13 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +33,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import android.widget.ProgressBar;
+import android.widget.AdapterView;
+
 
 
 public class DoMissionActivity extends AppCompatActivity {
@@ -45,6 +55,10 @@ public class DoMissionActivity extends AppCompatActivity {
     private int batterieM;
     private String salleM;
     private String nomEtablissement;
+    private int idUser;
+
+    private HashMap<String, Integer> userIdMap; // Declare userIdMap here
+
 
     //   private List<NotificationItem> notificationList = new ArrayList<>();
     //   private NotificationAdapter adapter;
@@ -53,6 +67,8 @@ public class DoMissionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_mission);
+
+        userIdMap = new HashMap<>();
 
         // Initialisation des spinners pour les missions et les utilisateurs
         spinnerMission = findViewById(R.id.spinner_mission);
@@ -114,26 +130,28 @@ public class DoMissionActivity extends AppCompatActivity {
         btnAffectation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 // Récupération des valeurs sélectionnées dans les spinners
+                //String selectedMission = spinnerMission.getSelectedItem().toString();
+               // String selectedUser = spinnerUsers.getSelectedItem().toString();
+
+
+
+                // Récupération des valeurs sélectionnées dans les spinners
+                User selectedUser = (User) spinnerUsers.getSelectedItem();
+                int selectedUserId = selectedUser.getId();
                 String selectedMission = spinnerMission.getSelectedItem().toString();
-                String selectedUser = spinnerUsers.getSelectedItem().toString();
 
-            /*    //envoie de mail
-                String recipientEmail = "recipient@example.com"; // Adresse e-mail du destinataire
-                String subject = "Nouvelle affectation réalisée";
-                String message = "Une nouvelle affectation a été réalisée. Veuillez vérifier.";
-
-                EmailSender.sendEmail(recipientEmail, subject, message);
-*/
-                // Construction de l'objet JSON pour la requête API POST
+// Construction de l'objet JSON pour la requête API POST
                 JSONObject requestBody = new JSONObject();
                 try {
-                    requestBody.put("Mail", selectedUser);
-                    requestBody.put("IdBorne", idBorneM); // Ajoutez l'ID de la borne correct ici
-                    requestBody.put("NomEtablissement", nomEtablissement);
-                    requestBody.put("Id_Etablissment", idEtablissement);
-                    requestBody.put("Salle", salleM);
-                    requestBody.put("Mission", selectedMission);
+                    requestBody.put("Type", selectedMission);
+                    requestBody.put("Id_Employes", selectedUserId);
+                    requestBody.put("Id_Borne", idBorneM);
+                    Log.d("Request Body", "Contenu du corps de la requête JSON : " + requestBody.toString());
+                    Log.d("User Selection", "Nom complet de l'utilisateur : " + fullName);
+                    Log.d("User Selection", "Identifiant de l'utilisateur : " + idUser);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,7 +159,7 @@ public class DoMissionActivity extends AppCompatActivity {
                 // Envoi de la requête API POST
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                         Request.Method.POST,
-                        "https://804b3669-1a04-43a0-8a07-09a076ab6c78.mock.pstmn.io/affecterMission",
+                        "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Affectation-Appli.php", // Remplacez ceci par votre endpoint API réel
                         requestBody,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -151,13 +169,28 @@ public class DoMissionActivity extends AppCompatActivity {
 
                                 // Envoyer la notification
                                 NotificationHelper.sendNotification(DoMissionActivity.this, "Nouvelle affectation", "Une nouvelle affectation a été réalisée.");
+
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.e("API Error", "Erreur : " + error.getMessage(), error);
-                                // Gérer les erreurs de l'API si nécessaire
+                                if (error.networkResponse != null && error.networkResponse.data != null) {
+                                    String jsonResponse = new String(error.networkResponse.data);
+                                    String cleanedJsonResponse = jsonResponse.replaceAll("<br", "");
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(cleanedJsonResponse);
+                                        // Handle the parsed JSON object
+                                        // ...
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        // Handle parsing errors
+                                        Log.e("JSON Parse Error", "Error parsing JSON response: " + cleanedJsonResponse, e);
+                                    }
+                                } else {
+                                    Log.e("API Error", "Erreur : " + error.getMessage(), error);
+                                    // Handle API errors if necessary
+                                }
                             }
                         });
 
@@ -198,10 +231,8 @@ public class DoMissionActivity extends AppCompatActivity {
 
     // Méthode pour récupérer les utilisateurs (agents) depuis l'API
     private void fetchUsers() {
-        // URL de l'API pour récupérer les utilisateurs (agents)
-        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Employes-Agents-Appli.php?id_etablissement" + idEtablissement;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Employes-Agents-Appli.php?id_etablissement=" + idEtablissement;
 
-        // Requête JSON pour récupérer les utilisateurs (agents)
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -212,40 +243,82 @@ public class DoMissionActivity extends AppCompatActivity {
                         try {
                             Log.d("Fetch Users", "Response: " + response.toString());
 
-                            // Liste pour stocker les informations des utilisateurs (agents) ayant le rôle 1
-                            List<UserInfo> usersList = new ArrayList<>();
+                            List<User> usersList = new ArrayList<>(); // List to store user objects
 
-                            // Parcours des utilisateurs et ajout à la liste si leur rôle est 1 (agent)
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject userObject = response.getJSONObject(i);
-                                int idUser = userObject.getInt("IdEmployes");
-                                int role = userObject.getInt("Id_Role");
-                                String nom = userObject.getString("Nom");
+                                String name = userObject.getString("Nom");
                                 String prenom = userObject.getString("Prenom");
-                                String mail = userObject.getString("Mail");
+                                idUser = userObject.getInt("IdEmployes");
+                                // Combine name and surname for display
+                                String fullName = name + " " + prenom;
+                                usersList.add(new User(fullName, idUser));
 
-
-                                usersList.add(new UserInfo(idUser, nom, prenom, mail, role));
-
+                                // Add user name and corresponding ID to the map
+                                userIdMap.put(fullName, idUser);
                             }
-                            // Ajouter un log pour vérifier les données d'utilisateurs récupérées
-                            Log.d("Fetch Users", "Données d'utilisateurs récupérées : " + usersList.toString());
-
-                            // Vérifiez si des données d'utilisateurs ont été récupérées
+                            //code ajouer il faut le tester
+                            StringBuilder usersInfo = new StringBuilder();
+                            for (User user : usersList) {
+                                usersInfo.append("Nom: ").append(user.getFullName()).append(", ");
+                                usersInfo.append("IdEmployes: ").append(user.getId()).append("\n");
+                            }
+                            Log.d("Fetch Users", "Données d'utilisateurs récupérées :\n" + usersInfo.toString());
+///jusqu'à ci
                             if (!usersList.isEmpty()) {
-                                // Adapter pour le spinner des utilisateurs
-                                ArrayAdapter<UserInfo> usersAdapter = new ArrayAdapter<>(DoMissionActivity.this,
-                                        android.R.layout.simple_spinner_item, usersList);
-                                usersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                // Créez un adaptateur personnalisé pour le spinner
+                                ArrayAdapter<User> usersAdapter = new ArrayAdapter<User>(DoMissionActivity.this,
+                                        android.R.layout.simple_spinner_item, usersList) {
+                                    // Override getView() pour afficher le nom complet de l'utilisateur
+                                    @NonNull
+                                    @Override
+                                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                        TextView textView = (TextView) super.getView(position, convertView, parent);
+                                        User user = usersList.get(position);
+                                        textView.setText(user.getFullName());
+                                        return textView;
+                                    }
+
+                                    // Override getDropDownView() pour afficher le nom complet de l'utilisateur dans la liste déroulante
+                                    @Override
+                                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                        TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+                                        User user = usersList.get(position);
+                                        textView.setText(user.getFullName());
+                                        return textView;
+                                    }
+                                };
+
+                                // Définissez l'adaptateur pour le spinner
                                 spinnerUsers.setAdapter(usersAdapter);
+                                Log.d("Fetch Users", "Spinner Adapter Set with " + usersList.size() + " users");
+
+                                // Ajoutez un écouteur d'élément sélectionné pour le spinnerUsers
+                                spinnerUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                                        User selectedUser = usersList.get(position);
+                                        Log.d("Spinner Item Selected", "Selected User: " + selectedUser.getFullName());
+                                        int userId = selectedUser.getId(); // Retrieve the Id_Employes from the selected user
+                                        Log.d("Spinner Item Selected", "Selected User: " + selectedUser.getFullName() + ", Id_Employes: " + userId);
+                                        // You can use userId as needed here
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+                                        Log.d("Spinner Item Selected", "No user selected");
+                                    }
+                                });
                             } else {
-                                // Gérer le cas où aucune donnée d'utilisateur n'est disponible
-                                Log.d("Fetch Users", "Aucun utilisateur avec le rôle 1 disponible");
+                                Log.d("Fetch Users", "Aucun utilisateur disponible");
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+
                 },
                 new Response.ErrorListener() {
                     @Override
