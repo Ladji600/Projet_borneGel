@@ -62,9 +62,24 @@ public class AgentActivity extends AppCompatActivity {
         CardView cardAffectationHistorique = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
         CardView cardNotification = findViewById(R.id.cardNotifications);
+        CardView cardMissions = findViewById(R.id.cardMission);
        // String etablissement = "etablissement";
 
 
+
+        cardMissions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AgentActivity.this, AgentViewMissionActivity.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Prenom", userFirstName);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+                startActivity(intent);
+            }
+        });
         cardNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

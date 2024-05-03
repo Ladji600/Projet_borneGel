@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -35,13 +36,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.widget.ProgressBar;
 import android.widget.AdapterView;
 
 
 
 public class DoMissionActivity extends AppCompatActivity {
-
+    private static final String API_URL = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Affectation-Mission-Appli.php";
     private Spinner spinnerMission, spinnerUsers;
     private int idEtablissement;
     private int idBorneM;
@@ -131,45 +134,26 @@ public class DoMissionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                // Récupération des valeurs sélectionnées dans les spinners
-                //String selectedMission = spinnerMission.getSelectedItem().toString();
-               // String selectedUser = spinnerUsers.getSelectedItem().toString();
-
-
-
                 // Récupération des valeurs sélectionnées dans les spinners
                 User selectedUser = (User) spinnerUsers.getSelectedItem();
                 int selectedUserId = selectedUser.getId();
                 String selectedMission = spinnerMission.getSelectedItem().toString();
 
-// Construction de l'objet JSON pour la requête API POST
-                JSONObject requestBody = new JSONObject();
-                try {
-                    requestBody.put("Type", selectedMission);
-                    requestBody.put("Id_Employes", selectedUserId);
-                    requestBody.put("Id_Borne", idBorneM);
-                    Log.d("Request Body", "Contenu du corps de la requête JSON : " + requestBody.toString());
-                    Log.d("User Selection", "Nom complet de l'utilisateur : " + fullName);
-                    Log.d("User Selection", "Identifiant de l'utilisateur : " + idUser);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                // Construction de la chaîne de caractères pour le corps de la requête
+                String requestBody = "type=" + selectedMission + "&idEmployes=" + selectedUserId + "&idBorne=" + idBorneM;
+                Log.d("Request Body", "Contenu du corps de la requête : " + requestBody);
 
-                // Envoi de la requête API POST
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.POST,
-                        "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Affectation-Appli.php", // Remplacez ceci par votre endpoint API réel
-                        requestBody,
-                        new Response.Listener<JSONObject>() {
+                // Envoi de la requête API POST avec StringRequest
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+                        new Response.Listener<String>() {
                             @Override
-                            public void onResponse(JSONObject response) {
+                            public void onResponse(String response) {
                                 // Gérer la réponse de l'API si nécessaire
                                 Toast.makeText(DoMissionActivity.this, "Affectation effectuée avec succès", Toast.LENGTH_SHORT).show();
 
                                 // Envoyer la notification
                                 NotificationHelper.sendNotification(DoMissionActivity.this, "Nouvelle affectation", "Une nouvelle affectation a été réalisée.");
-
+                                finish();
                             }
                         },
                         new Response.ErrorListener() {
@@ -192,12 +176,22 @@ public class DoMissionActivity extends AppCompatActivity {
                                     // Handle API errors if necessary
                                 }
                             }
-                        });
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("type", selectedMission);
+                        params.put("idEmployes", String.valueOf(selectedUserId));
+                        params.put("idBorne", String.valueOf(idBorneM));
+                        return params;
+                    }
+                };
 
                 // Ajout de la requête à la file d'attente de Volley
-                Volley.newRequestQueue(DoMissionActivity.this).add(jsonObjectRequest);
+                Volley.newRequestQueue(DoMissionActivity.this).add(stringRequest);
             }
         });
+
 
         // Gestion du clic sur le bouton de retour
         findViewById(R.id.icon_back).setOnClickListener(new View.OnClickListener() {

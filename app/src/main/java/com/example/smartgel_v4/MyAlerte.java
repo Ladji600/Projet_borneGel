@@ -5,7 +5,6 @@ public class MyAlerte {
     private  int idBorne;
 
     private int gel;
-
     private int batterie;
     private String salle;
     private String heure;
