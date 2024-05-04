@@ -5,16 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-     <TextView
-         android:id="@+id/title_text_notifications"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:textSize="18sp"
-         android:textStyle="bold"
-        android:layout_marginTop="40dp"
-         android:textColor="@android:color/black"
-         android:text="Notifications"
-         android:layout_gravity="center"/>
+
 
      <TextView
          android:id="@+id/title_text_view"

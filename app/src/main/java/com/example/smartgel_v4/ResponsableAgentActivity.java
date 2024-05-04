@@ -37,6 +37,13 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         String adresse = getIntent().getStringExtra("Address");
         Log.d("idUser", "Valeur de idUser dans le REsponsableActivity : " + idUser);
 
+
+        //envoie de IDETABLISSEMENT dans BornePollingTask
+        // Exemple, remplace par le vrai identifiant d'établissement
+        //BornePollingTask task = new BornePollingTask(idEtablissement);
+        //task.execute();
+
+
         // Afficher l'email dans le TextView approprié
         TextView userNameTextView = findViewById(R.id.userRespAgentTextView);
         fullname = userName + " " + userFirstName;

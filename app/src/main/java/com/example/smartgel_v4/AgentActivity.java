@@ -15,7 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class AgentActivity extends AppCompatActivity {
+
 
     private String fullname;
     private TextView nomEtablissementText;
@@ -33,6 +36,9 @@ public class AgentActivity extends AppCompatActivity {
         int idUser = getIntent().getIntExtra("IdEmployes", -1 );
         String nomEtablissement = getIntent().getStringExtra("NomEtablissement");
         String adresse = getIntent().getStringExtra("Address");
+
+
+
 
         Log.d("idUser", "Agent Activity Id de l'utilisateur : " + idUser);
 

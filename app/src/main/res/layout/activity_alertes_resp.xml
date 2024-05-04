@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".AlertesActivity">
+    tools:context=".AlertesActivity"
+    >
 
     <!-- Titre SmartGel -->
     <TextView
@@ -16,7 +17,8 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:textColor="@color/purple_700"/>
 
     <!-- Titre Affectation -->
     <TextView
@@ -28,7 +30,8 @@
         android:textStyle="bold"
         android:layout_below="@id/smartGelTitleTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:textColor="@color/purple_700"/>
 
     <!-- Nom de l'utilisateur -->
     <TextView
@@ -38,7 +41,8 @@
         android:textSize="16sp"
         android:layout_below="@id/affectationTitleTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        />
 
     <!-- Nom de l'établissement -->
     <TextView
@@ -48,7 +52,8 @@
         android:textSize="16sp"
         android:layout_below="@id/nomUtilisateurTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        />
 
     <!-- Bouton de retour -->
     <ImageView
@@ -70,6 +75,6 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_below="@id/etablissementTextView"
-        android:background="@android:color/white"/>
+        />
 
 </RelativeLayout>

@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +26,9 @@
             android:layout_marginEnd="153dp"
             android:text="SmartGel"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/purple_700"
+            />
 
         <TextView
             android:id="@+id/affectationTitleTextView"
@@ -40,7 +43,9 @@
             android:layout_marginEnd="168dp"
             android:text="Alertes"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/purple_700"
+            />
 
 
         <TextView
@@ -54,7 +59,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="71dp"
             android:text=""
-            android:textSize="20sp" />
+            android:textSize="20sp"
+
+            />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -69,35 +76,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Id Borne :"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                />
 
             <TextView
                 android:id="@+id/text_etablissement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Etablissement :"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+               />
 
             <TextView
                 android:id="@+id/text_id_etablissement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID Etablissement: "
-                android:textSize="20sp" />
+                android:textSize="20sp"
+               />
 
             <TextView
                 android:id="@+id/text_salle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Salle :"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                />
 
             <TextView
                 android:id="@+id/text_mission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mission :"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+               />
 
             <!-- Liste déroulante pour les missions -->
             <Spinner
@@ -106,14 +118,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:minHeight="48dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                />
 
             <TextView
                 android:id="@+id/text_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Agents :"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+               />
             <!-- Liste déroulante pour les utilisateurs -->
 
             <Spinner
@@ -122,19 +136,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:minHeight="48dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                />
 
 
             <!-- Bouton Appeler Affectation -->
             <Button
                 android:id="@+id/button_affecter"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/btn_background_light"
+                android:backgroundTint="@color/vert_200"
                 android:text="Affectater"
-                android:textColor="@android:color/white" />
+               />
 
             <ImageView
                 android:id="@+id/icon_back"
@@ -144,7 +160,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="2dp"
-                android:src="@drawable/icon_back" />
+                android:src="@drawable/icon_back"
+               />
 
         </LinearLayout>
 

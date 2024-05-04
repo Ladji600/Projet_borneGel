@@ -36,6 +36,7 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
     private int idUser;
     private AffectationsAdapter mAffectationsAdapter;
     private List<MyAffectation> mAffectations;
+    private TextView nomEtablissementText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,12 @@ public class HistoriqueAffectationsActivity extends AppCompatActivity {
         idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
         nomUser = getIntent().getStringExtra("Nom");
         idUser = getIntent().getIntExtra("IdEmployes", -1);
+
+        String nomEtablissement = getIntent().getStringExtra("NomEtablissement");
+
+        // Initialisation du TextView pour afficher le nom de l'établissement
+        nomEtablissementText = findViewById(R.id.text_TitleEtablissement);
+        nomEtablissementText.setText(nomEtablissement);
 
 
         // Afficher les valeurs récupérées dans la console de débogage

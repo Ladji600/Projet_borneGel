@@ -88,7 +88,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_borne"/>
+                    android:src="@drawable/icon_borne_2"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_affectation"/>
+                    android:src="@drawable/icon_alerte"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_affectation"/>
+                    android:src="@drawable/icon_notification2"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_affectation"/>
+                    android:src="@drawable/icon_historique"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
+   <!--     <androidx.cardview.widget.CardView
             android:id="@+id/cardOneBorne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -286,7 +286,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView> -->
     </GridLayout>
 
 

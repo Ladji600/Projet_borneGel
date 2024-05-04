@@ -15,7 +15,7 @@
         android:layout_marginTop="10dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
-        android:backgroundTint="#000000">
+        android:backgroundTint="@color/celeste">
 
 
         <TextView
@@ -25,7 +25,7 @@
             android:text="Liste des Affectations réalisées"
             android:padding="16dp"
             android:textSize="20sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -33,10 +33,12 @@
         android:id="@+id/text_TitleEtablissement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Eta"
-        android:layout_margin="20dp"
         android:layout_below="@+id/cardAffectation"
-        android:textSize="20sp"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_affectation"

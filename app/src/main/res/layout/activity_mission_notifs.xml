@@ -16,7 +16,8 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:textColor="@color/purple_700"/>
 
     <!-- Titre Affectation -->
     <TextView
@@ -28,7 +29,8 @@
         android:textStyle="bold"
         android:layout_below="@id/smartGelTitleTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:textColor="@color/purple_700"/>
 
     <!-- Nom de l'utilisateur -->
     <TextView
