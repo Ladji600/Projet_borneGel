@@ -1,9 +1,17 @@
 package com.example.smartgel_v4;
-import android.app.Service;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.IBinder;
+import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,42 +19,38 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BornePollingService extends Service {
+public class BornePollingService extends BroadcastReceiver {
     private static final String TAG = "BornePollingService";
     private static final String API_URL_BASE = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Alertes-Appli.php?id_etablissement=";
+    private static final long INTERVAL = AlarmManager.INTERVAL_HALF_HOUR; // Interval de 30 minutes
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Service started");
 
-        // Récupère dynamiquement l'identifiant de l'établissement pour l'utilisateur actuel
-      /*  int idEtablissementUtilisateur = getIdEtablissementUtilisateurActuel();
+        // Récupère dynamiquement le rôle de l'utilisateur actuel
+        int roleUtilisateur = getRoleUtilisateurActuel(context);
 
-        public int getIdEtablissementUtilisateurActuel() {
-            // Ici, tu devrais mettre le code pour récupérer dynamiquement l'identifiant de l'établissement
-            // pour l'utilisateur actuel à partir de la source appropriée (base de données, préférences partagées, etc.)
-            // Puis, retourne cet identifiant.
+        // Si le rôle de l'utilisateur est 2 (responsable), lancez la tâche asynchrone de polling des bornes
+        if (roleUtilisateur == 2) {
+            int idEtablissementUtilisateur = getIdEtablissementUtilisateurActuel(context);
+            new BornePollingTask().execute(idEtablissementUtilisateur);
         }
-
-        // Lance la tâche asynchrone de polling des bornes
-        new BornePollingTask().execute(idEtablissementUtilisateur);*/
-
-        return START_STICKY; // Indique que le service doit être redémarré s'il est arrêté de manière inattendue
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        // Retourne null car le service n'est pas lié à une activité
-        return null;
+    // Méthode pour récupérer dynamiquement l'identifiant de l'établissement pour l'utilisateur actuel
+    private int getIdEtablissementUtilisateurActuel(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("Id_Etablissement", -1); // -1 est une valeur par défaut si l'identifiant n'est pas trouvé
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Service destroyed");
-        // Ajoute ici le code pour arrêter les tâches du service, s'il y en a
+    // Méthode pour récupérer dynamiquement le rôle de l'utilisateur actuel
+    private int getRoleUtilisateurActuel(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("Id_Role", -1); // -1 est une valeur par défaut si le rôle n'est pas trouvé
     }
 
+    // Classe interne pour effectuer la tâche asynchrone de polling des bornes
     private static class BornePollingTask extends AsyncTask<Integer, Void, String> {
         @Override
         protected String doInBackground(Integer... params) {

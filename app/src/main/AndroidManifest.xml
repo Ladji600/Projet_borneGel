@@ -71,9 +71,14 @@
         <activity
             android:name=".ResponsableTechniqueHistoriqueMission"
             android:exported="false" />
+        <service
+            android:name=".BornePollingService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

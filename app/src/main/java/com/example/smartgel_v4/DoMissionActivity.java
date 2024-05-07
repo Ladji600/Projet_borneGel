@@ -122,7 +122,7 @@ public class DoMissionActivity extends AppCompatActivity {
         String fullName = userName + " " + userFirstName;
         userNameTextView.setText(fullName);
 
-        // Récupération des missions depuis l'API
+        // Récupération des missions
         fetchMissions();
 
         // Récupération des utilisateurs (agents) depuis l'API
@@ -140,8 +140,8 @@ public class DoMissionActivity extends AppCompatActivity {
                 String selectedMission = spinnerMission.getSelectedItem().toString();
 
                 // Construction de la chaîne de caractères pour le corps de la requête
-                String requestBody = "type=" + selectedMission + "&idEmployes=" + selectedUserId + "&idBorne=" + idBorneM;
-                Log.d("Request Body", "Contenu du corps de la requête : " + requestBody);
+              //  String requestBody = "type=" + selectedMission + "&idEmployes=" + selectedUserId + "&idBorne=" + idBorneM;
+               // Log.d("Request Body", "Contenu du corps de la requête : " + requestBody);
 
                 // Envoi de la requête API POST avec StringRequest
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
@@ -165,7 +165,7 @@ public class DoMissionActivity extends AppCompatActivity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(cleanedJsonResponse);
                                         // Handle the parsed JSON object
-                                        // ...
+                                        
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         // Handle parsing errors
