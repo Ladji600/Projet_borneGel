@@ -1,0 +1,90 @@
+[33mcommit e5b041a4cfc5fd23fe416b5d10d7dc3511e3b73b[m[33m ([m[1;36mHEAD -> [m[1;32mApplication[m[33m)[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Tue May 7 15:29:02 2024 +0200
+
+     07-05-2024 code avec utilisation de notification, pas encore finir
+
+[33mcommit 1bcb9258909a9b69f0a41dba51d0ab6105cedd1d[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Sun May 5 01:03:21 2024 +0200
+
+    App avec deisgne
+
+[33mcommit ed20fbeae69ca49994b2744073eb263ff81672d7[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Fri May 3 10:32:03 2024 +0200
+
+    presque fini avec l'api il manque la notidifation
+
+[33mcommit 816c9bb9dc9511d39490fa5b3f59535aae8195ef[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Mon Apr 29 18:01:48 2024 +0200
+
+    presque fini avec api
+
+[33mcommit 1f639898bb7ffaa4b4cc7a5656d6a0c61b57bd3e[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Sun Apr 28 22:42:58 2024 +0200
+
+    ajoute avec l'api
+
+[33mcommit 126d3c7d9d24cd521e3e1be7ed30ba6b20327ab2[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Tue Apr 23 21:46:37 2024 +0200
+
+    commencement ave api
+
+[33mcommit 466ed5ea1442d1c3a0be6fb12ea51752329584b1[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Wed Apr 17 22:24:03 2024 +0200
+
+    historique mission ajouté
+
+[33mcommit 1594b6ceefb57646d803f4a4b2b2ac2f7cb32808[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Fri Apr 12 12:48:01 2024 +0200
+
+    interface pour chaque utilisateur avec methode get
+
+[33mcommit c78c4c9b0234db5fe506f1dec5d5ec3340265589[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Fri Apr 5 08:43:03 2024 +0200
+
+    activity login v1, on essai de trouver la solution à l'envoie et la reception des information avec la methode post selon chaque utilisateur
+
+[33mcommit 9c4f370efcc4ed666fbb7345a14112222341c18d[m[33m ([m[1;31morigin/Application[m[33m)[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Wed Mar 27 09:21:19 2024 +0100
+
+    plusieurs bornes affichage
+
+[33mcommit f79c94a3a0a0529fb88d0a92b0326c83cf99a132[m[33m ([m[1;32mmain[m[33m)[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Mon Mar 25 16:27:04 2024 +0100
+
+    ajour des code source dans le dossier application
+
+[33mcommit 6da18d2a68247b030473beeb50bc0444de320702[m
+Merge: 5f73375 28d3c54
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Mon Mar 25 15:05:11 2024 +0100
+
+    Merge branch 'main' of https://github.com/DallyLozano/projetBorneGelV1
+
+[33mcommit 5f73375ea3777eaa0e1e4eb4c98a240120ff89a6[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Mon Mar 25 14:36:59 2024 +0100
+
+    prempiere update de projet borne de gel sur github
+
+[33mcommit 7565142a64e26135b34090b99b39ddfce4c29f1e[m
+Author: DallyLozano <lozanochahua-dallymilagros@lycee-jeanrostand.fr>
+Date:   Mon Mar 25 14:26:32 2024 +0100
+
+    Premier commit
+
+[33mcommit 28d3c54253b79bf47c55f303fb2fc693d850f0b2[m
+Author: DallyLozano <144660157+DallyLozano@users.noreply.github.com>
+Date:   Mon Mar 25 14:21:42 2024 +0100
+
+    Initial commit
