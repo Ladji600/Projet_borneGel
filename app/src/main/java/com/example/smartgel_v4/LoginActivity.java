@@ -34,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
             // Rediriger l'utilisateur vers l'activité appropriée en fonction de son rôle
             int idRole = sharedPreferences.getInt("Id_Role", -1);
             redirectToActivity(idRole, idEmployes);
+
+            // Programmer le JobScheduler
+            SchedulerUtils.scheduleJob(this);
         }
 
         edEmail = findViewById(R.id.editTextEmail);

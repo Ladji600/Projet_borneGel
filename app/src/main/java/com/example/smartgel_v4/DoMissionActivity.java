@@ -154,7 +154,7 @@ public class DoMissionActivity extends AppCompatActivity {
                                 // Enregistrer la notification
                                 String notificationTitle = "Une nouvelle affectation a été créée.";
                                 String notificationMessage = "Vous avez un missionà effectuer.";
-                               NotificationUtils.saveNotification(DoMissionActivity.this, notificationTitle, notificationMessage);
+                               //NotificationUtils.saveNotification(DoMissionActivity.this, notificationTitle, notificationMessage);
 /*
                                 // Récupérer l'ID de l'utilisateur sélectionné
                                 User selectedUser = (User) spinnerUsers.getSelectedItem();

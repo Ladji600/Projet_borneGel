@@ -79,7 +79,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
        // String etablissement = "etablissement";
 
 
-        cardNotifications.setOnClickListener(new View.OnClickListener() {
+      /*  cardNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -95,7 +95,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        });
+        }); */
         cardAlertes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

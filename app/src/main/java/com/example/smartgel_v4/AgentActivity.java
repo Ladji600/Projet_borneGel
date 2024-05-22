@@ -86,7 +86,7 @@ public class AgentActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        cardNotification.setOnClickListener(new View.OnClickListener() {
+    /*    cardNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AgentActivity.this, NotificationActivity.class);
@@ -100,7 +100,7 @@ public class AgentActivity extends AppCompatActivity {
                 Log.d("idUser", "Intent Activity Id de l'utilisateur : " + idUser);
                 startActivity(intent);
             }
-        });
+        });*/
         cardAffectationHistorique.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

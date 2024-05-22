@@ -80,7 +80,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
          cardHistoriqueList = findViewById(R.id.cardHistorique);
          cardNotification = findViewById(R.id.cardNotifications);
 
-
+/*
          cardNotification.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -93,7 +93,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
                  intent.putExtra("Id_Role", -1);
                  startActivity(intent);
              }
-         });
+         });*/
 
 
         cardAlerteList.setOnClickListener(new View.OnClickListener() {

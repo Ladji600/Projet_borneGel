@@ -90,7 +90,7 @@ public class AgentViewMissionActivity extends AppCompatActivity {
 
     // Méthode pour récupérer les données des missions depuis l'API
     private void fetchDataFromAPI(int idEmploye) {
-        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Visualisation-Appli.php?id_employe=" + idEmploye;
+        String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Visualisation_mission-Agent_Appli.php?id_employe=" + idEmploye;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
