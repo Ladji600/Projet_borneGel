@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,7 @@ public class EtablissementActivity extends AppCompatActivity {
     private int userId; // Déclaration de la variable userId
    // private int userEtablissment;
 
+    private int idRole;
    // public EtablissementActivity() {
     //}
 
@@ -60,6 +62,7 @@ public class EtablissementActivity extends AppCompatActivity {
        userName = getIntent().getStringExtra("Nom");
        userId = getIntent().getIntExtra("IdEmployes", -1);
        prenom = getIntent().getStringExtra("Prenom");
+       idRole = getIntent().getIntExtra("Id_Role", -1);
 
 
 
@@ -79,8 +82,8 @@ public class EtablissementActivity extends AppCompatActivity {
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Appel de la méthode de déconnexion de la classe utilitaire
-                SessionManager.logout(EtablissementActivity.this);
+                // Appel de la méthode de déconnexion en utilisant les informations d'établissement
+                logoutUser();
             }
         });
 
@@ -104,6 +107,7 @@ public class EtablissementActivity extends AppCompatActivity {
                 intent.putExtra("Prenom", prenom);
                 intent.putExtra("NomEtablissement", etablissementName);
                 intent.putExtra("Address",addresse);
+                intent.putExtra("Id_Role",-1);
 
                 startActivity(intent);
             }
@@ -226,5 +230,21 @@ public class EtablissementActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    private void logoutUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Supprimer les informations liées à l'utilisateur
+        editor.remove("IdEmployes");
+        editor.remove("Id_Role");
+        editor.apply();
+
+        // Rediriger vers LoginActivity
+        Intent intent = new Intent(EtablissementActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Fermer l'activité actuelle pour éviter qu'elle ne reste dans la pile d'activités
+
     }
 }

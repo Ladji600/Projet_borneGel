@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NOTIFICATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
 
     <application
         android:allowBackup="true"
@@ -20,15 +24,19 @@
         android:theme="@style/Theme.SmartGel_v4"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <service
+            android:name=".BornePollingJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity
             android:name=".AgentViewMissionActivity"
             android:exported="false" />
         <activity
             android:name=".AlertesRespActivity"
             android:exported="false" />
-        <activity
-            android:name=".MissionNotifsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".NotificationActivity"
             android:exported="false" />
@@ -71,17 +79,14 @@
         <activity
             android:name=".ResponsableTechniqueHistoriqueMission"
             android:exported="false" />
-        <service
-            android:name=".BornePollingService"
-            android:enabled="true"
-            android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

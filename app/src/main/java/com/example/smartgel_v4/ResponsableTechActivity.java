@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
 
     CardView cardHistoriqueList;
     CardView cardAlerteList;
+    CardView cardNotification;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -34,6 +37,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
         String userFirstName = getIntent().getStringExtra("Prenom");
         String nomEtablissement =getIntent().getStringExtra("NomEtablissement");
         String adresse = getIntent().getStringExtra("Address");
+        int  idRole = getIntent().getIntExtra("Id_Role", -1);
 
 
         // Afficher l'email dans le TextView approprié
@@ -49,8 +53,8 @@ public class ResponsableTechActivity extends AppCompatActivity {
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Appel de la méthode de déconnexion de la classe utilitaire
-                SessionManager.logout(ResponsableTechActivity.this);
+                // Appel de la méthode de déconnexion en utilisant les informations d'établissement
+                logoutUser();
             }
         });
 
@@ -74,7 +78,22 @@ public class ResponsableTechActivity extends AppCompatActivity {
          cardBornes = findViewById(R.id.cardBornes);
          cardAlerteList = findViewById(R.id.cardAlerte);
          cardHistoriqueList = findViewById(R.id.cardHistorique);
+         cardNotification = findViewById(R.id.cardNotifications);
 
+
+         cardNotification.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(ResponsableTechActivity.this, NotificationActivity.class);
+                 intent.putExtra("Nom", userName);
+                 intent.putExtra("IdEtablissement", idEtablissement);
+                 intent.putExtra("IdEmployes", idUser);
+                 intent.putExtra("NomEtablissement", nomEtablissement);
+                 intent.putExtra("Address", adresse);
+                 intent.putExtra("Id_Role", -1);
+                 startActivity(intent);
+             }
+         });
 
 
         cardAlerteList.setOnClickListener(new View.OnClickListener() {
@@ -119,5 +138,20 @@ public class ResponsableTechActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void logoutUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Supprimer les informations liées à l'utilisateur
+        editor.remove("IdEmployes");
+        editor.remove("Id_Role");
+        editor.apply();
+
+        // Rediriger vers LoginActivity
+        Intent intent = new Intent(ResponsableTechActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Fermer l'activité actuelle pour éviter qu'elle ne reste dans la pile d'activités
     }
 }

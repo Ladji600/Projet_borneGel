@@ -35,6 +35,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         int idUser = getIntent().getIntExtra("IdEmployes", -1);
         String nomEtablissement = getIntent().getStringExtra("NomEtablissement");
         String adresse = getIntent().getStringExtra("Address");
+        int idRole = getIntent().getIntExtra("Id_Role", -1);
         Log.d("idUser", "Valeur de idUser dans le REsponsableActivity : " + idUser);
 
 
@@ -57,9 +58,11 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         imgDeconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Appel de la méthode de déconnexion de la classe utilitaire
-                SessionManager.logout(ResponsableAgentActivity.this);
+                // Appel de la méthode de déconnexion en utilisant les informations d'établissement
+                logoutUser();
             }
+
+
         });
 
 /*
@@ -88,6 +91,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 intent.putExtra("Email", userEmail);
                 intent.putExtra("NomEtablissement", nomEtablissement);
                 intent.putExtra("Address", adresse);
+                intent.putExtra("Id_Role", idRole);
                 startActivity(intent);
 
             }
@@ -137,6 +141,24 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 // Démarrer l'activité BornesActivity avec l'Intent
                 startActivity(intent);
             }
+
         });
+
     }
+
+    private void logoutUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Supprimer les informations liées à l'utilisateur
+        editor.remove("IdEmployes");
+        editor.remove("Id_Role");
+        editor.apply();
+
+        // Rediriger vers LoginActivity
+        Intent intent = new Intent(ResponsableAgentActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Fermer l'activité actuelle pour éviter qu'elle ne reste dans la pile d'activités
+    }
+
 }

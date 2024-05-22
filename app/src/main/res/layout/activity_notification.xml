@@ -22,6 +22,18 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+
+    <ImageView
+        android:id="@+id/icon_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="2dp"
+        android:src="@drawable/icon_back"
+        />
+
     <!-- RecyclerView pour afficher les notifications -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -30,5 +42,18 @@
         android:layout_below="@+id/title_text_notifications"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Bouton de rafraîchissement -->
+    <Button
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_view"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="-80dp"
+        android:text="Rafraîchir"
+        android:backgroundTint="@color/vert_200"/>
+
 
 </RelativeLayout>

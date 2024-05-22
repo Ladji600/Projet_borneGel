@@ -1,21 +1,19 @@
 package com.example.smartgel_v4;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +26,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Vérifier si un utilisateur est déjà connecté
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        int idEmployes = sharedPreferences.getInt("IdEmployes", -1);
+        if (idEmployes != -1) {
+            // Rediriger l'utilisateur vers l'activité appropriée en fonction de son rôle
+            int idRole = sharedPreferences.getInt("Id_Role", -1);
+            redirectToActivity(idRole, idEmployes);
+        }
 
         edEmail = findViewById(R.id.editTextEmail);
         edPassword = findViewById(R.id.editTextPassword);
@@ -64,13 +71,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(LoginActivity.this, "Erreur de connexion", Toast.LENGTH_SHORT).show();
                         Log.d("error", error.getMessage());
-
                     }
                 });
 
         Volley.newRequestQueue(this).add(request);
     }
-
 
     private void handleLoginResponse(JSONObject response) {
         try {
@@ -83,64 +88,74 @@ public class LoginActivity extends AppCompatActivity {
             String mdp = response.getString("Mot_De_Passe");
             int role = response.getInt("Id_Role");
 
+            int idEtablissement = response.getInt("Id_Etablissement");
 
-
-
-           // sendEmail(email, prenom, nom);
-
-            Log.d("idUser", "LOgin Id de l'utilisateur : " + idUser);
-
-            // Vous pouvez récupérer les autres données ici
+            // Enregistrer les informations de session dans les préférences partagées
+            SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("IdEmployes", idUser);
+            editor.putInt("Id_Role", role);
+            editor.putInt("Id_Etablissement", idEtablissement);
+            editor.apply();
 
             // Redirection en fonction du rôle de l'utilisateur
-            switch (role) {
-                case 3: // Responsable Technique
-                    Intent intentResponsableTech = new Intent(LoginActivity.this, EtablissementActivity.class);
-                    intentResponsableTech.putExtra("IdEmployes", idUser);
-                    intentResponsableTech.putExtra("Mail", email);
-                    intentResponsableTech.putExtra("Nom", nom);
-                    intentResponsableTech.putExtra("Prenom", prenom);
-
-                    startActivity(intentResponsableTech);
-                    break;
-                case 2: // Responsable Agent
-                    Intent intentResponsableAgent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
-                    int idEtablissement = response.getInt("Id_Etablissement");
-                    String nomEtablissement = response.getString("NomEtablissement");
-                    String adresse = response.getString("Address");
-                   // int idEtablissement = response.getInt("Id_Etablissement");
-                    intentResponsableAgent.putExtra("IdEmployes", idUser);
-                    intentResponsableAgent.putExtra("Mail", email);
-                    intentResponsableAgent.putExtra("Nom", nom);
-                    intentResponsableAgent.putExtra("Prenom", prenom);
-                    intentResponsableAgent.putExtra("Id_Etablissement", idEtablissement);
-                    intentResponsableAgent.putExtra("NomEtablissement", nomEtablissement);
-                    intentResponsableAgent.putExtra("Address", adresse);
-                    startActivity(intentResponsableAgent);
-                    break;
-                case 1: // Agent
-                    Intent intentAgent = new Intent(LoginActivity.this, AgentActivity.class);
-                     idEtablissement = response.getInt("Id_Etablissement");
-                     nomEtablissement = response.getString("NomEtablissement");
-                     adresse = response.getString("Address");
-                  //  idEtablissement = response.getInt("Id_Etablissement");
-                    intentAgent.putExtra("IdEmployes", idUser);
-                    intentAgent.putExtra("Mail", email);
-                    intentAgent.putExtra("Nom", nom);
-                    intentAgent.putExtra("Prenom",prenom);
-                    intentAgent.putExtra("Id_Etablissement", idEtablissement);
-                    intentAgent.putExtra("NomEtablissement", nomEtablissement);
-                    intentAgent.putExtra("Address", adresse);
-                    startActivity(intentAgent);
-                    break;
-                default:
-                    Toast.makeText(getApplicationContext(), "Rôle non reconnu", Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            redirectToActivity(role, idUser);
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Erreur réponse JSON", Toast.LENGTH_SHORT).show();
             Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
+        }
+    }
+
+    private void redirectToActivity(int role, int idUser) {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        String email = sharedPreferences.getString("Mail", "");
+        String nom = sharedPreferences.getString("Nom", "");
+        String prenom = sharedPreferences.getString("Prenom", "");
+        int idEtablissement = sharedPreferences.getInt("Id_Etablissement", -1);
+        String nomEtablissement = sharedPreferences.getString("NomEtablissement", "");
+        String adresse = sharedPreferences.getString("Address", "");
+
+        Intent intent;
+        switch (role) {
+            case 3: // Responsable Technique
+                intent = new Intent(LoginActivity.this, EtablissementActivity.class);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Mail", email);
+                intent.putExtra("Nom", nom);
+                intent.putExtra("Prenom", prenom);
+                intent.putExtra("Id_Role", role);
+                startActivity(intent);
+                SchedulerUtils.scheduleJob(this);
+                break;
+            case 2: // Responsable Agent
+                intent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Mail", email);
+                intent.putExtra("Nom", nom);
+                intent.putExtra("Prenom", prenom);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+                intent.putExtra("Id_Role", role);
+                startActivity(intent);
+                SchedulerUtils.scheduleJob(this);
+                break;
+            case 1: // Agent
+                intent = new Intent(LoginActivity.this, AgentActivity.class);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("Mail", email);
+                intent.putExtra("Nom", nom);
+                intent.putExtra("Prenom", prenom);
+                intent.putExtra("Id_Etablissement", idEtablissement);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+                intent.putExtra("Id_Role", role);
+                startActivity(intent);
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "Rôle non reconnu", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

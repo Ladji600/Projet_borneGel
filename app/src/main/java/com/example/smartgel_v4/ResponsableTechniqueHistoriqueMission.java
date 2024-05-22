@@ -52,6 +52,7 @@ public class ResponsableTechniqueHistoriqueMission extends AppCompatActivity {
 
 
 
+
         // Initialisation de la RecyclerView
         mRecyclerView = findViewById(R.id.recycle_view_affectation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

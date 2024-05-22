@@ -209,7 +209,6 @@ public class AgentViewMissionActivity extends AppCompatActivity {
             }
 
             // Méthode pour afficher la boîte de dialogue de confirmation
-            // Méthode pour afficher la boîte de dialogue de confirmation
             private void showConfirmationDialog(int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                 builder.setMessage("Voulez-vous vraiment finir la mission?")
