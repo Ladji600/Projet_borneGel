@@ -66,6 +66,7 @@ public class EtablissementActivity extends AppCompatActivity {
 
 
 
+
         Log.d("IntentData", "Email: " + userEmail);
         Log.d("IntentData", "Nom: " + userName);
         Log.d("IntentData", "IdEmployes: " + userId);
@@ -148,6 +149,13 @@ public class EtablissementActivity extends AppCompatActivity {
 
                                 // Ajout de l'établissement à la liste
                                 mEtablissements.add(myEtablissement);
+
+                                // Enregistrer l'ID de l'établissement dans les préférences partagées
+                                SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("IdEtablissement", idEtablissement);
+                                editor.apply();
+
                             }
 
                             // Rafraîchissement de la RecyclerView

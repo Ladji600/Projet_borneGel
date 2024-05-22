@@ -54,6 +54,7 @@ public class AlertesActivity extends AppCompatActivity {
         userFirstName = getIntent().getStringExtra("Prenom");
         userEmail = getIntent().getStringExtra("Email");
         nomEtablissement =getIntent().getStringExtra("NomEtablissement");
+        idEtablissement = getIntent().getIntExtra("EXTRA_ID_ETABLISSEMENT", -1);
 
         nomEtablissementText = findViewById(R.id.etablissementTextView);
         nomEtablissementText.setText(nomEtablissement);
