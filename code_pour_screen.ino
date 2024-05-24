@@ -24,6 +24,9 @@ const int BATTERYPIN = 36;
 const float TensionMin = 1;
 const float TensionMax = 3.3;
 
+const int BATTERYPIN = 36;
+const float TensionMin = 1.5;
+const float TensionMax = 3.3;
 
 void setup() {
   Serial.begin(115200);
