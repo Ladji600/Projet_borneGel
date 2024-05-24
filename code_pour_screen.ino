@@ -65,10 +65,8 @@ void sendData(int gel_percentage, int batteryLevel) {
   doc["battery_percentage"] = batteryLevel;
   doc["gel_percentage"] = gel_percentage;
   doc["numeroESP"] = 1;
-
   String postData;
   serializeJson(doc, postData);
-  
   Serial.println(postData);
 
   HTTPClient http;
