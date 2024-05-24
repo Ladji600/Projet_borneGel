@@ -73,6 +73,6 @@ void sendData(int gel_percentage, int batteryLevel) {
   http.begin(api_url);
   http.addHeader("Content-Type", "application/json");
   int httpResponseCode = http.POST(postData);
-
   http.end();
+  
 }
