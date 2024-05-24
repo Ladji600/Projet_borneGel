@@ -59,7 +59,8 @@ void loop() {
 }
 
 
-void sendData(int gel_percentage, int batteryLevel) {
+void sendData(int gel_percentage, int batteryLevel) {  
+  
   DynamicJsonDocument doc(204);
   doc["battery_percentage"] = batteryLevel;
   doc["gel_percentage"] = gel_percentage;
