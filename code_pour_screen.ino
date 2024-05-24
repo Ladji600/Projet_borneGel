@@ -5,6 +5,7 @@
 
 #include <HTTPClient.h>
 
+const char* api_url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/API_Borne.php";
 
 
 #define SOUND_SPEED 340
