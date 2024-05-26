@@ -84,12 +84,6 @@ public class DoMissionActivity extends AppCompatActivity {
                 finish(); // Utilisation de la méthode onBackPressed() pour revenir en arrière
             }
         });
-        // Initialisation de la RecyclerView pour les notifications
-   /*     RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NotificationAdapter(notificationList);
-        recyclerView.setAdapter(adapter);
-*/
 
         // Récupération des informations passées depuis l'activité précédente
         idEtablissement = getIntent().getIntExtra("Id_Etablissement", -1);
@@ -139,9 +133,6 @@ public class DoMissionActivity extends AppCompatActivity {
                 int selectedUserId = selectedUser.getId();
                 String selectedMission = spinnerMission.getSelectedItem().toString();
 
-                // Construction de la chaîne de caractères pour le corps de la requête
-              //  String requestBody = "type=" + selectedMission + "&idEmployes=" + selectedUserId + "&idBorne=" + idBorneM;
-               // Log.d("Request Body", "Contenu du corps de la requête : " + requestBody);
 
                 // Envoi de la requête API POST avec StringRequest
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
@@ -151,19 +142,14 @@ public class DoMissionActivity extends AppCompatActivity {
                                 // Gérer la réponse de l'API si nécessaire
                                 Toast.makeText(DoMissionActivity.this, "Affectation effectuée avec succès", Toast.LENGTH_SHORT).show();
 
-                                // Enregistrer la notification
+                            /*    // Enregistrer la notification
                                 String notificationTitle = "Une nouvelle affectation a été créée.";
                                 String notificationMessage = "Vous avez un missionà effectuer.";
-                               //NotificationUtils.saveNotification(DoMissionActivity.this, notificationTitle, notificationMessage);
-/*
-                                // Récupérer l'ID de l'utilisateur sélectionné
-                                User selectedUser = (User) spinnerUsers.getSelectedItem();
-                                int selectedUserId = selectedUser.getId();
-*/                                // Envoyer la notification spécifique à l'utilisateur sélectionné
-                               // sendNotificationToUser(selectedUserId);
+
+
                                 sendNotificationToUser(selectedUserId, notificationTitle, notificationMessage);
                                 // Afficher l'ID de l'utilisateur sélectionné dans le log
-                                Log.d("SelectedUserID", "ID de l'utilisateur sélectionné : " + selectedUserId);
+                                Log.d("SelectedUserID", "ID de l'utilisateur sélectionné : " + selectedUserId);*/
 
                             }
                         },
@@ -214,11 +200,7 @@ public class DoMissionActivity extends AppCompatActivity {
     }
 
 
-    // Méthode pour ajouter une notification à la liste
- /*   private void addNotification(String title, String message) {
-        Intent intent = new Intent(this, NotificationActivity.class);
-        startActivity(intent);
-    }*/
+
     // Méthode pour récupérer les missions depuis l'API
     private void fetchMissions() {
         // Création d'une liste de missions
@@ -334,15 +316,15 @@ public class DoMissionActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
-    private void sendNotificationToUser(int userIdSpinner, String title, String message) {
+   /* private void sendNotificationToUser(int userIdSpinner, String title, String message) {
         // Construire le message de la notification
         String notificationMessage = message;
         // Convertir userIdSpinner en String
         String userIdString = String.valueOf(userIdSpinner);
 
         // Envoyer la notification à l'utilisateur correspondant à l'ID
-       // NotificationHelper.sendNotification(this, title, notificationMessage, userIdString);
-    }
+       NotificationHelper.sendNotification(this, title, notificationMessage, userIdString);
+    }*/
 
 
 }

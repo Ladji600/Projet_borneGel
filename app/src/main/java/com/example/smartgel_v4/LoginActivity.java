@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
             redirectToActivity(role, idUser);
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Erreur réponse JSON", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
             Log.d("API_RESPONSE", "Réponse reçue : " + response.toString());
         }
     }

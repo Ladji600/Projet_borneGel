@@ -236,10 +236,5 @@ public class AlertesActivity extends AppCompatActivity {
             }
         }
     }
-  /*  private boolean isResponsableAgentOrTechnique() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
-        int roleId = sharedPreferences.getInt("Id_Role", -1);
-        // Vérifie si c'est un Responsable Agent (ID de rôle 2) ou un Responsable Technique (ID de rôle 3)
-        return roleId == 2 || roleId == 3;
-    }*/
+
 }
