@@ -1,13 +1,21 @@
 package com.example.smartgel_v4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,10 +25,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText edEmail, edPassword;
     Button btnConnexion;
+    TextView textViewSite;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +47,14 @@ public class LoginActivity extends AppCompatActivity {
             int idRole = sharedPreferences.getInt("Id_Role", -1);
             redirectToActivity(idRole, idEmployes);
 
-            // Programmer le JobScheduler
-            SchedulerUtils.scheduleJob(this);
         }
 
         edEmail = findViewById(R.id.editTextEmail);
         edPassword = findViewById(R.id.editTextPassword);
         btnConnexion = findViewById(R.id.buttonConnexion);
+        textViewSite = findViewById(R.id.textViewSite);
+
+
 
         btnConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +64,25 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (useremail.length() == 0 || userpassword.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Veuillez compléter tous les champs", Toast.LENGTH_SHORT).show();
+
+
                 } else {
                     callLoginAPI(useremail, userpassword);
                 }
             }
         });
+
+        textViewSite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Rediriger vers la page Web du projet
+                String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/WEB/connexion.html"; // Remplacez par l'URL réelle de votre projet
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void callLoginAPI(String email, String password) {
         String url = "http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/Connexion2-Appli.php";
@@ -68,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         handleLoginResponse(response);
                     }
+
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -90,8 +117,11 @@ public class LoginActivity extends AppCompatActivity {
             String email = response.getString("Mail");
             String mdp = response.getString("Mot_De_Passe");
             int role = response.getInt("Id_Role");
+            String nomEtablissement = response.getString("NomEtablissement");
 
             int idEtablissement = response.getInt("Id_Etablissement");
+
+
 
             // Enregistrer les informations de session dans les préférences partagées
             SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
@@ -99,7 +129,16 @@ public class LoginActivity extends AppCompatActivity {
             editor.putInt("IdEmployes", idUser);
             editor.putInt("Id_Role", role);
             editor.putInt("Id_Etablissement", idEtablissement);
+            editor.putString("Nom", nom);
+            editor.putString("Prenom", prenom);
+            editor.putString("NomEtablissement", nomEtablissement);
             editor.apply();
+
+            // Planifier l'alarme pour des notifications périodiques
+            AlarmScheduler.scheduleRepeatingAlarm(this);
+
+            // Ajout de la gestion de l'optimisation de la batterie
+      //      requestBatteryOptimizationExemption();
 
             // Redirection en fonction du rôle de l'utilisateur
             redirectToActivity(role, idUser);
@@ -129,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("Prenom", prenom);
                 intent.putExtra("Id_Role", role);
                 startActivity(intent);
-                SchedulerUtils.scheduleJob(this);
+
                 break;
             case 2: // Responsable Agent
                 intent = new Intent(LoginActivity.this, ResponsableAgentActivity.class);
@@ -141,8 +180,9 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("NomEtablissement", nomEtablissement);
                 intent.putExtra("Address", adresse);
                 intent.putExtra("Id_Role", role);
+
                 startActivity(intent);
-                SchedulerUtils.scheduleJob(this);
+
                 break;
             case 1: // Agent
                 intent = new Intent(LoginActivity.this, AgentActivity.class);
@@ -161,4 +201,17 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
+   /* private void requestBatteryOptimizationExemption() {
+        Intent intent = new Intent();
+        String packageName = getPackageName();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+        } else {
+            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + packageName));
+        }
+        startActivity(intent);
+    }*/
+
 }

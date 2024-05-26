@@ -2,6 +2,8 @@ package com.example.smartgel_v4;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,10 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.TimeUnit;
+
 public class ResponsableAgentActivity extends AppCompatActivity {
 
      private String fullname;
-     private String nomEtablissemnetText;
+    private TextView nomEtablissementText;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,11 +42,10 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         int idRole = getIntent().getIntExtra("Id_Role", -1);
         Log.d("idUser", "Valeur de idUser dans le REsponsableActivity : " + idUser);
 
-
-        //envoie de IDETABLISSEMENT dans BornePollingTask
-        // Exemple, remplace par le vrai identifiant d'établissement
-        //BornePollingTask task = new BornePollingTask(idEtablissement);
-        //task.execute();
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Id_Etablissement", idEtablissement);
+        editor.apply();
 
 
         // Afficher l'email dans le TextView approprié
@@ -50,7 +53,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         fullname = userName + " " + userFirstName;
         userNameTextView.setText(fullname);
 
-        TextView nomEtablissementText = findViewById(R.id.nomEtablissementTextView);
+        nomEtablissementText = findViewById(R.id.nomEtablissementTextView);
         nomEtablissementText.setText(nomEtablissement);
 
         // Ajouter la fonctionnalité de déconnexion
@@ -76,26 +79,7 @@ public class ResponsableAgentActivity extends AppCompatActivity {
         CardView cardNotifications = findViewById(R.id.cardNotifications);
 
 
-       // String etablissement = "etablissement";
 
-
-      /*  cardNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(ResponsableAgentActivity.this, NotificationActivity.class);
-                intent.putExtra("Nom", userName);
-                intent.putExtra("Id_Etablissement", idEtablissement);
-                intent.putExtra("IdEmployes", idUser);
-                intent.putExtra("Prenom", userFirstName);
-                intent.putExtra("Email", userEmail);
-                intent.putExtra("NomEtablissement", nomEtablissement);
-                intent.putExtra("Address", adresse);
-                intent.putExtra("Id_Role", idRole);
-                startActivity(intent);
-
-            }
-        }); */
         cardAlertes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

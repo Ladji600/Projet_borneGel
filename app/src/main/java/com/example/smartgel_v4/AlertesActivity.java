@@ -1,6 +1,10 @@
 package com.example.smartgel_v4;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +58,23 @@ public class AlertesActivity extends AppCompatActivity {
         userFirstName = getIntent().getStringExtra("Prenom");
         userEmail = getIntent().getStringExtra("Email");
         nomEtablissement =getIntent().getStringExtra("NomEtablissement");
-        idEtablissement = getIntent().getIntExtra("EXTRA_ID_ETABLISSEMENT", -1);
+        //idEtablissement = getIntent().getIntExtra("EXTRA_ID_ETABLISSEMENT", -1);
+
+      // Récupération de l'ID de l'établissement depuis les préférences partagées
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
+     /*   if (isResponsableAgentOrTechnique()) {
+            idEtablissement = sharedPreferences.getInt("Id_Etablissement", -1);
+        } else {
+            idEtablissement = sharedPreferences.getInt("IdEtablissement", -1);
+        }
+
+        // Gestion de l'ID de l'établissement si non trouvé
+        if (idEtablissement == -1) {
+            Log.e(TAG, "Identifiant d'établissement non trouvé dans les préférences partagées.");
+            // Traitez ce cas selon vos besoins, par exemple, affichez un message d'erreur ou terminez l'activité.
+            finish();
+            return;
+        }*/
 
         nomEtablissementText = findViewById(R.id.etablissementTextView);
         nomEtablissementText.setText(nomEtablissement);
@@ -216,4 +236,10 @@ public class AlertesActivity extends AppCompatActivity {
             }
         }
     }
+  /*  private boolean isResponsableAgentOrTechnique() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
+        int roleId = sharedPreferences.getInt("Id_Role", -1);
+        // Vérifie si c'est un Responsable Agent (ID de rôle 2) ou un Responsable Technique (ID de rôle 3)
+        return roleId == 2 || roleId == 3;
+    }*/
 }

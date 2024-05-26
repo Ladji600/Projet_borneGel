@@ -154,6 +154,7 @@ public class EtablissementActivity extends AppCompatActivity {
                                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.smartgel_v4.PREFERENCES", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putInt("IdEtablissement", idEtablissement);
+                                editor.putString("NomEtablissement", etablissementName);
                                 editor.apply();
 
                             }
