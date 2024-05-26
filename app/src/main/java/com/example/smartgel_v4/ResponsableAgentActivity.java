@@ -68,15 +68,10 @@ public class ResponsableAgentActivity extends AppCompatActivity {
 
         });
 
-/*
-        SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String useremail = sharedPreferences.getString("useremail", "").toString();
-        Toast.makeText(getApplicationContext(),"Bienvenue : " +useremail,Toast.LENGTH_SHORT).show();
-*/
         CardView cardHistoriqueAffectation = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
         CardView cardAlertes = findViewById(R.id.cardAlerte);
-        CardView cardNotifications = findViewById(R.id.cardNotifications);
+        CardView cardRecherche = findViewById(R.id.cardRecherche);
 
 
 
@@ -94,6 +89,21 @@ public class ResponsableAgentActivity extends AppCompatActivity {
                 intent.putExtra("Address", adresse);
                 startActivity(intent);
 
+            }
+        });
+
+
+        cardRecherche.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResponsableAgentActivity.this,RechercheActivity.class);
+                intent.putExtra("Nom", userName);
+                intent.putExtra("IdEtablissement", idEtablissement);
+                intent.putExtra("IdEmployes", idUser);
+                intent.putExtra("NomEtablissement", nomEtablissement);
+                intent.putExtra("Address", adresse);
+                intent.putExtra("Id_Role", -1);
+                startActivity(intent);
             }
         });
         cardHistoriqueAffectation.setOnClickListener(new View.OnClickListener() {

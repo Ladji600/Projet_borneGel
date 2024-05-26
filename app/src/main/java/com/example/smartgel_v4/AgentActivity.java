@@ -67,7 +67,7 @@ public class AgentActivity extends AppCompatActivity {
 */
         CardView cardAffectationHistorique = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
-        CardView cardNotification = findViewById(R.id.cardNotifications);
+        CardView cardRecherche = findViewById(R.id.cardRecherche);
         CardView cardMissions = findViewById(R.id.cardMission);
        // String etablissement = "etablissement";
 
@@ -86,10 +86,10 @@ public class AgentActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    /*    cardNotification.setOnClickListener(new View.OnClickListener() {
+       cardRecherche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AgentActivity.this, NotificationActivity.class);
+                Intent intent = new Intent(AgentActivity.this, RechercheActivity.class);
                 intent.putExtra("Nom", userName);
                 intent.putExtra("Id_Etablissement", idEtablissement);
                 intent.putExtra("IdEmployes", idUser);
@@ -100,7 +100,7 @@ public class AgentActivity extends AppCompatActivity {
                 Log.d("idUser", "Intent Activity Id de l'utilisateur : " + idUser);
                 startActivity(intent);
             }
-        });*/
+        });
         cardAffectationHistorique.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

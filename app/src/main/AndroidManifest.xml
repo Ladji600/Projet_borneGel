@@ -9,10 +9,7 @@
     <uses-permission android:name="android.permission.NOTIFICATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
-
-
-
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -26,14 +23,19 @@
         android:theme="@style/Theme.SmartGel_v4"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".RechercheActivity"
+            android:exported="false" />
 
-        <receiver android:name=".AlarmReceiver" android:exported="true"/>
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="true" />
 
         <service
             android:name=".BornePollingJobServiceAPI"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".AgentViewMissionActivity"
@@ -41,8 +43,6 @@
         <activity
             android:name=".AlertesRespActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".DoMissionActivity"
             android:exported="false" />
@@ -70,7 +70,6 @@
         <activity
             android:name=".OneBorneActivity"
             android:exported="false" />
-
         <activity
             android:name=".DefaultActivity"
             android:exported="false" />
@@ -80,14 +79,13 @@
         <activity
             android:name=".ResponsableTechniqueHistoriqueMission"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

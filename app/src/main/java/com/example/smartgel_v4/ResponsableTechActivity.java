@@ -21,7 +21,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
 
     CardView cardHistoriqueList;
     CardView cardAlerteList;
-    CardView cardNotification;
+    CardView cardRecherche;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,21 +70,18 @@ public class ResponsableTechActivity extends AppCompatActivity {
             }
         });
 
-     /*   SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String useremail = sharedPreferences.getString("email", "").toString();
-        Toast.makeText(getApplicationContext(),"Bienvenue : " +useremail,Toast.LENGTH_SHORT).show();
-*/
-        // cardOneBorne = findViewById(R.id.cardOneBorne);
+
+
          cardBornes = findViewById(R.id.cardBornes);
          cardAlerteList = findViewById(R.id.cardAlerte);
          cardHistoriqueList = findViewById(R.id.cardHistorique);
-         cardNotification = findViewById(R.id.cardNotifications);
+         cardRecherche = findViewById(R.id.cardRecherche);
 
-/*
-         cardNotification.setOnClickListener(new View.OnClickListener() {
+
+         cardRecherche.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(ResponsableTechActivity.this, NotificationActivity.class);
+                 Intent intent = new Intent(ResponsableTechActivity.this, RechercheActivity.class);
                  intent.putExtra("Nom", userName);
                  intent.putExtra("IdEtablissement", idEtablissement);
                  intent.putExtra("IdEmployes", idUser);
@@ -93,7 +90,7 @@ public class ResponsableTechActivity extends AppCompatActivity {
                  intent.putExtra("Id_Role", -1);
                  startActivity(intent);
              }
-         });*/
+         });
 
 
         cardAlerteList.setOnClickListener(new View.OnClickListener() {
