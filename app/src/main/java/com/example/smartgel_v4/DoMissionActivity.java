@@ -60,11 +60,12 @@ public class DoMissionActivity extends AppCompatActivity {
     private String nomEtablissement;
     private int idUser;
 
+
+
+
     private HashMap<String, Integer> userIdMap; // Declare userIdMap here
 
 
-    //   private List<NotificationItem> notificationList = new ArrayList<>();
-    //   private NotificationAdapter adapter;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +133,9 @@ public class DoMissionActivity extends AppCompatActivity {
                 User selectedUser = (User) spinnerUsers.getSelectedItem();
                 int selectedUserId = selectedUser.getId();
                 String selectedMission = spinnerMission.getSelectedItem().toString();
-
-
                 // Envoi de la requête API POST avec StringRequest
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                         new Response.Listener<String>() {
-
                             public void onResponse(String response) {
                                 // Gérer la réponse de l'API si nécessaire
                                 Toast.makeText(DoMissionActivity.this, "Affectation effectuée avec succès", Toast.LENGTH_SHORT).show();
@@ -201,7 +199,7 @@ public class DoMissionActivity extends AppCompatActivity {
 
 
 
-    // Méthode pour récupérer les missions depuis l'API
+    // Méthode pour récupérer les missions
     private void fetchMissions() {
         // Création d'une liste de missions
         List<String> missionsList = new ArrayList<>();
@@ -280,7 +278,7 @@ public class DoMissionActivity extends AppCompatActivity {
                                 spinnerUsers.setAdapter(usersAdapter);
                                 Log.d("Fetch Users", "Spinner Adapter Set with " + usersList.size() + " users");
 
-                                // Ajoutez un écouteur d'élément sélectionné pour le spinnerUsers
+                                // Ajoute d'un écouteur d'élément sélectionné pour le spinnerUsers
                                 spinnerUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -316,6 +314,8 @@ public class DoMissionActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+
+
    /* private void sendNotificationToUser(int userIdSpinner, String title, String message) {
         // Construire le message de la notification
         String notificationMessage = message;

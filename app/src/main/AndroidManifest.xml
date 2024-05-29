@@ -31,12 +31,6 @@
             android:name=".AlarmReceiver"
             android:exported="true" />
 
-        <service
-            android:name=".BornePollingJobServiceAPI"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <activity
             android:name=".AgentViewMissionActivity"
             android:exported="false" />

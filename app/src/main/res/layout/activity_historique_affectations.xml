@@ -22,7 +22,7 @@
             android:id="@+id/AffectationTitletextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Liste des Affectations réalisées"
+            android:text="Liste des tâches affectées"
             android:padding="16dp"
             android:textSize="20sp"
             android:textColor="@color/black"/>

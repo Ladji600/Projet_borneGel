@@ -11,6 +11,7 @@ public class MyAlerte {
     private String date;
     private int idEtablissement;
 
+
     public MyAlerte(int idBorne, int gel, int batterie, String salle, String heure, String date, int idEtablissement) {
         this.idBorne = idBorne;
         this.salle = salle;
@@ -20,6 +21,8 @@ public class MyAlerte {
         this.date = date;
         this.idEtablissement = idEtablissement;
     }
+
+
 
 
     public int getIdEtablissement() {

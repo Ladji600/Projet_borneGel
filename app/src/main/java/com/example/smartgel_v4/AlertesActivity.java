@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,7 +112,7 @@ public class AlertesActivity extends AppCompatActivity {
         }
     }
 
-    // Méthode pour récupérer le nom de l'établissement depuis l'API
+
 
 
     // Méthode pour récupérer les données des alertes depuis l'API
@@ -141,6 +143,7 @@ public class AlertesActivity extends AppCompatActivity {
                                 MyAlerte alerte = new MyAlerte(idBorne, gel, batterie, salle, heure, date, idEta);
                                 // Ajouter l'alerte à la liste
                                 mAlertes.add(alerte);
+
                             }
                             mAlertesAdapter = new AlertesAdapter(mAlertes);
                             mRecyclerView.setAdapter(mAlertesAdapter);
@@ -165,9 +168,11 @@ public class AlertesActivity extends AppCompatActivity {
 
         private List<MyAlerte> myAlertes;
 
+
         public AlertesAdapter(List<MyAlerte> alertes) {
             myAlertes = alertes;
         }
+
 
         @NonNull
         @Override
@@ -191,6 +196,7 @@ public class AlertesActivity extends AppCompatActivity {
             private TextView idBorneTextView, batterieTextView, gelTextView, heureTextView, dateTextView, salleTextView;
             private Button btnAffectation;
 
+
             public AlertesViewHolder(View itemView) {
                 super(itemView);
                 idBorneTextView = itemView.findViewById(R.id.text_id_borne);
@@ -200,6 +206,7 @@ public class AlertesActivity extends AppCompatActivity {
                 heureTextView = itemView.findViewById(R.id.text_heure);
                 dateTextView = itemView.findViewById(R.id.text_date);
                 btnAffectation = itemView.findViewById(R.id.button_appeler_affectation);
+
             }
 
             public void bind(MyAlerte alerte) {
@@ -210,12 +217,16 @@ public class AlertesActivity extends AppCompatActivity {
                 heureTextView.setText("Heure : " + alerte.getHeure());
                 dateTextView.setText("Date : " + alerte.getDate());
 
+
+
+
                 // Définir le click listener pour le bouton dans onBindViewHolder()
                 btnAffectation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Création de l'intent pour passer à DoMissionActivity
+                       // Création de l'intent pour passer à DoMissionActivity
                         Intent intent = new Intent(AlertesActivity.this, DoMissionActivity.class);
+
 
                         // Ajout des données à passer à DoMissionActivity
                         intent.putExtra("IdEmployes", idUser);
@@ -231,10 +242,12 @@ public class AlertesActivity extends AppCompatActivity {
                         intent.putExtra("Date", alerte.getDate());
                         intent.putExtra("NomEtablissement",nomEtablissement );
                         startActivity(intent); // Démarrage de DoMissionActivity
+
                     }
                 });
             }
         }
     }
+
 
 }

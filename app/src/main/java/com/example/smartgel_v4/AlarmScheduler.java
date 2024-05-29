@@ -15,6 +15,8 @@ public class AlarmScheduler {
 
         // Définir l'alarme pour se déclencher toutes les 5 minutes
         long intervalMillis = 5 * 60 * 1000;
+       // long intervalMillis = 2 * 60 * 1000;
+
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), intervalMillis, pendingIntent);
     }
 }
