@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Création de compte SmartGel</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="page_affectation\java.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* Couleur de fond */
+      background-image: url('page_de_création_de_compte/fond.png'); /* Image de fond */
+      background-size: cover; /* Ajustement de la taille de l'image */
+      background-position: center; /* Position de l'image */
+    }
+  
+    .form-container {
+      border: 2px solid black; /* Contour noir */
+      padding: 30px;
+      border-radius: 10px; /* Coins arrondis */
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      background-color: #ffffff; /* Couleur de fond de la div du formulaire */
+      font-family: Arial, sans-serif; /* Utilisation de la police Arial ou une police sans-serif par défaut */
+      margin: 100px auto 20px; /* Centrer le formulaire avec une marge en haut de 100px */
+    }
+  
+    .form-image {
+      background-image: url('page_de_création_de_compte/logo.png'); /* Image de fond */
+      background-size: 40%; /* Ajustement de la taille de l'image */
+      background-repeat: no-repeat; /* Empêche la répétition de l'image */
+      background-position: center; /* Centrer l'image */
+      height: 150px; /* Hauteur de l'image */
+      margin-bottom: 20px; /* Ajout d'une marge en bas */
+    }
+  
+    .error-message {
+      display: none; /* Par défaut, les messages d'erreur sont cachés */
+      color: red; /* Couleur du texte des messages d'erreur */
+      font-size: 0.8em; /* Taille de la police des messages d'erreur */
+      height: 50px;
+    }
+  
+    .form-group {
+      margin-bottom: 20px; /* Espacement entre les groupes de formulaire */
+    }
+  
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da; /* Bordure grise */
+      border-radius: 5px; /* Coins arrondis */
+      box-sizing: border-box; /* Boîte de modèle pour inclure le remplissage et la bordure dans la largeur */
+    }
+  
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: blue; /* Bleu */
+      color: #ffffff; /* Texte blanc */
+      border: none;
+      border-radius: 5px; /* Coins arrondis */
+      cursor: pointer;
+      transition: background-color 0.3s; /* Transition fluide lors du survol */
+    }
+  
+    .btn-primary:hover {
+      background-color: #0056b3; /* Bleu foncé au survol */
+    }
+  
+    .navbar {
+      margin-bottom: 0;
+      padding-left: 100px; /* Add some padding for aesthetics */
+      padding-right: 15px;
+      height: 52px;
+    }
+  
+    .navbar-nav > li {
+      background-color: #222222; /* Fond de couleur pour les <li> non actifs */
+    }
+  
+    .navbar-nav > li > a {
+      color: #333; /* Couleur du texte pour les liens */
+    }
+  
+    .navbar-nav > li.active {
+      background-color: #d3d3d3; /* Couleur de fond différente pour le <li> actif */
+    }
+  
+    .navbar-nav > li:hover {
+      background-color: #cccccc; /* Couleur de fond au survol */
+    }
+  
+    .form-control {
+      width: 100%;
+      padding: 10px; /* Augmente la taille du padding pour ajuster la hauteur */
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      height: auto; /* Permet au select de s'adapter à la taille du contenu */
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">SmartGel</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="RT_Dashboard.html">Dashboard</a></li>
+        <li class="active"><a href="RT_affectation.html">Affectation de mission</a></li>
+        <li><a href="RT_CreationCompte.html">Créer un compte</a></li>
+        <li><a href="RT_DetailsBorne.html">Details des Bornes</a></li>
+        <li><a href="connexion.html">Déconnexion</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="form-container">
+  <div class="form-image"></div>
+  <form id="affectationForm" method="post" action="http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/ConfigAffectationRT.php">
+  <h2 class="text-center">Affectation des missions&nbsp;&nbsp;</h2>
+    <div class="form-group">
+      <select class="form-control" type="text" name="employer">
+        <!-- Les options seront chargées par jQuery -->
+      </select>
+      <small class="error-message" id="errorSelectAgent">N'oublier pas de sélectionner un agent</small>
+    </div>
+    <div class="form-group">
+      <select class="form-control" type="text" name="borne">
+        <!-- Les options seront chargées par jQuery -->
+      </select>
+      <small class="error-message" id="errorSelectBorne">N'oublier pas de sélectionner une borne</small>
+    </div>
+    <div class="form-group">
+      <select class="form-control" type="text" name="motif">
+        <option value="0">Choisissez un motif</option>
+        <option value="1">Niveau de batterie</option>
+        <option value="2">Niveau de gel</option>
+        <option value="3">Niveau de batterie et de gel</option>
+      </select>
+      <small class="error-message" id="errorSelectMotif">N'oubliez pas de sélectionner un motif</small>
+    </div>
+    <div>
+      <button class="btn btn-primary" type="submit" onClick="verifierFormulaire()"> Envoyer</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function() {
+
+
+
+    /*
+    // Vérifie si l'URL se termine par /RT_affectation.html
+    if (window.location.href.endsWith('/RT_affectation.html')) {
+        // Remplace l'URL actuelle par /RT_affectation.html sans rechargement de la page
+        const newUrl = window.location.origin + '/RT_affectation.html';
+        console.log("New URL:", newUrl);
+        history.replaceState(null, null, newUrl);
+        console.log("URL replaced");
+    }  */
+    
+    // Fonction pour récupérer le contenu du cookie
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    var userId = getCookie("IdEmployes"); // Récupérer l'ID de l'utilisateur depuis le cookie
+
+    // Utilisez userId comme nécessaire dans votre script
+    console.log("ID de l'utilisateur:", userId);
+
+    var allBornes = []; // Stocker toutes les bornes
+
+// Chargement des bornes
+$.ajax({
+  url: 'http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/getBornesDashboard.php',
+  type: 'GET',
+  dataType: 'json',
+  success: function(data) {
+    allBornes = data; // Stocker les données des bornes
+    populateBornes(data); // Afficher toutes les bornes initialement
+  },
+  error: function(jqXHR, textStatus, errorThrown) {
+    console.log("Erreur lors de la récupération des bornes: " + textStatus, errorThrown);
+  }
+});
+
+// Fonction pour afficher les bornes dans le select
+function populateBornes(bornes) {
+  var select = $('select[name="borne"]');
+  select.empty();
+  select.append('<option value="0">Choisissez une borne</option>');
+  $.each(bornes, function(key, value) {
+    var option = $('<option></option>')
+          .attr('value', value.NomEtablissement) // Utiliser NomEtablissement comme valeur
+          .data('id-borne', value.IdBorne)
+          .text("Bornes " + value.IdBorne + ' - ' + value.NomEtablissement);
+      select.append(option);
+  });
+}
+
+// Chargement des agents
+$.ajax({
+  url: 'http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/getAgentDashboard.php',
+  type: 'GET',
+  dataType: 'json',
+  success: function(data) {
+    var select = $('select[name="employer"]');
+    select.empty();
+    select.append('<option value="0">Choisissez un agent</option>');
+    $.each(data, function(key, value) {
+      var option = $('<option></option>')
+            .attr('value', value.NomEtablissement) // Utiliser NomEtablissement comme valeur
+            .data('id-employes', value.IdEmployes)
+            .text("Agents " + value.Nom + " " + value.Prenom + " - " + value.NomEtablissement);
+        select.append(option);
+    });
+  },
+  error: function(jqXHR, textStatus, errorThrown) {
+    console.log("Erreur lors de la récupération des agents: " + textStatus, errorThrown);
+  }
+});
+
+$('select[name="employer"]').on('change', function() {
+  var selectedOptionE = $(this).find('option:selected');
+  var nomEtablissementE = selectedOptionE.val(); // Récupérer NomEtablissement
+  var idEmployes = selectedOptionE.data('id-employes');
+
+  console.log('NomEtablissement: ' + nomEtablissementE);
+  console.log('IdEmployes: ' + idEmployes);
+
+  // Filtrer les bornes par NomEtablissement
+  var filteredBornes = allBornes.filter(function(borne) {
+    return borne.NomEtablissement === nomEtablissementE;
+  });
+
+  // Afficher les bornes filtrées
+  populateBornes(filteredBornes);
+});
+
+$('select[name="borne"]').on('change', function() {
+  var selectedOptionB = $(this).find('option:selected');
+  var nomEtablissementB = selectedOptionB.val(); // Récupérer NomEtablissement
+  var idBorne = selectedOptionB.data('id-borne');
+
+  console.log('NomEtablissementB: ' + nomEtablissementB);
+  console.log('IdBorne: ' + idBorne);
+});
+
+
+
+
+    // Soumission du formulaire
+    $('#affectationForm').submit(function(event) {
+      event.preventDefault(); // Empêche le comportement par défaut du formulaire
+
+      // Récupération des valeurs des champs
+      var selectedMotifText = $('select[name="motif"] option:selected').text();
+      var selectedEmployerId = $('select[name="employer"] option:selected').data('id-employes'); // Récupère l'ID de l'employé sélectionné
+      var selectedBorneId = $('select[name="borne"] option:selected').data('id-borne'); // Récupère l'ID de la borne sélectionnée
+
+      // Envoi des données via AJAX
+      $.ajax({
+        url: $(this).attr('action'), // Récupère l'URL d'action du formulaire
+        type: $(this).attr('method'), // Récupère la méthode du formulaire (POST dans ce cas)
+        data: {
+          motif: selectedMotifText,
+          employer: selectedEmployerId,
+          borne: selectedBorneId
+        },
+        success: function(response) {
+          // Traitez la réponse
+          if (response.status === "success") {
+            // Afficher un message de succès
+            alert(response.message);
+            // Réinitialiser le formulaire
+            $('#affectationForm')[0].reset();
+          } else {
+            // Afficher un message d'erreur
+            alert("Erreur: " + response.message);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Gérez les erreurs
+          console.log("Erreur AJAX : " + textStatus, errorThrown);
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+
+</html>

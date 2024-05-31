@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard SmartGel</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* Couleur de fond */
+      background-image: url('page_de_création_de_compte/fond.png'); /* Image de fond */
+      background-size: cover; /* Ajustement de la taille de l'image */
+      background-position: center; /* Position de l'image */
+    }
+
+    .form-container {
+      border: 2px solid black; /* Contour noir */
+      padding: 30px;
+      border-radius: 10px; /* Coins arrondis */
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      background-color: #ffffff; /* Couleur de fond de la div du formulaire */
+      font-family: Arial, sans-serif; /* Utilisation de la police Arial ou une police sans-serif par défaut */
+      margin: 100px auto 20px; /* Centrer le formulaire avec une marge en haut de 100px */
+    }
+
+    .form-image {
+      background-image: url('page_de_création_de_compte/logo.png'); /* Image de fond */
+      background-size: 40%; /* Ajustement de la taille de l'image */
+      background-repeat: no-repeat; /* Empêche la répétition de l'image */
+      background-position: center; /* Centrer l'image */
+      height: 150px; /* Hauteur de l'image */
+      margin-bottom: 20px; /* Ajout d'une marge en bas */
+    }
+
+    .error-message {
+      display: none; /* Par défaut, les messages d'erreur sont cachés */
+      color: red; /* Couleur du texte des messages d'erreur */
+      font-size: 0.8em; /* Taille de la police des messages d'erreur */
+      height: 50px;
+    }
+
+    .form-group {
+      margin-bottom: 20px; /* Espacement entre les groupes de formulaire */
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da; /* Bordure grise */
+      border-radius: 5px; /* Coins arrondis */
+      box-sizing: border-box; /* Boîte de modèle pour inclure le remplissage et la bordure dans la largeur */
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: blue; /* Bleu */
+      color: #ffffff; /* Texte blanc */
+      border: none;
+      border-radius: 5px; /* Coins arrondis */
+      cursor: pointer;
+      transition: background-color 0.3s; /* Transition fluide lors du survol */
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3; /* Bleu foncé au survol */
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      padding-left: 100px; /* Add some padding for aesthetics */
+      padding-right: 15px;
+      height: 52px;
+    }
+  
+    .navbar-nav > li {
+      background-color: #222222; /* Fond de couleur pour les <li> non actifs */
+    }
+  
+    .navbar-nav > li > a {
+      color: #333; /* Couleur du texte pour les liens */
+    }
+  
+    .navbar-nav > li.active {
+      background-color: #d3d3d3; /* Couleur de fond différente pour le <li> actif */
+    }
+  
+    .navbar-nav > li:hover {
+      background-color: #cccccc; /* Couleur de fond au survol */
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px; /* Augmente la taille du padding pour ajuster la hauteur */
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      height: auto; /* Permet au select de s'adapter à la taille du contenu */
+    }
+
+    .borne-card {
+      border: 2px solid black; /* Encadrement noir */
+      border-radius: 10px; /* Coins arrondis */
+      background-color: #ffffff; /* Fond blanc */
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-title {
+      color: white; /* Texte blanc */
+    }
+
+    #etablissement-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      height: auto;
+      background-color: #fff; /* Couleur de fond */
+      color: #555; /* Couleur du texte */
+      font-size: 16px; /* Taille de la police */
+      appearance: none; /* Supprimer le style par défaut */
+      -webkit-appearance: none; /* Pour les navigateurs basés sur WebKit */
+      -moz-appearance: none; /* Pour les navigateurs basés sur Gecko */
+      background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>'); /* Ajouter une flèche personnalisée */
+      background-repeat: no-repeat;
+      background-position: right 10px center; /* Position de l'icône de flèche */
+      cursor: pointer;
+      margin-bottom: 20px; /* Ajoute une marge en bas au bouton de sélection */
+    }
+
+    .borne-card:first-child {
+      margin-bottom: 20px; /* Ajoute une marge en bas uniquement à la première carte de borne */
+    }
+
+    .borne-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .images-container {
+      position: absolute;
+      right: 10px; /* Ajustez cette valeur selon l'espace désiré par rapport au bord droit */
+      top: 10px; /* Ajustez cette valeur selon l'espace désiré par rapport au bord supérieur */
+    }
+
+    .status-image {
+      width: 50px;
+      height: 50px;
+      margin-left: 5px; /* Espace entre les images */
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">SmartGel</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Missions</a></li>
+        <li><a href="connexion.html">Déconnexion</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<br><br>
+
+<div class="container">
+  <h1 class="dashboard-title" id="user-name">Missions :</h1>
+  <br>
+  <div id="mission-cards"></div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var missionCards = $('#mission-cards');
+    var userId = getCookie("IdEmployes"); // Récupérer l'ID de l'utilisateur depuis le cookie
+
+    // Fonction pour récupérer le contenu du cookie
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    console.log("l'id de l'agent est : " + userId);
+
+    // Fonction pour récupérer et afficher les données des missions
+    function afficherDonnees() {
+      // URL vers le fichier PHP qui renvoie les données des missions
+      var url = 'http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/getMissions.php?userId=' + userId;
+
+      // Récupérer et afficher les données JSON
+      $.getJSON(url, function(data) {
+        missionCards.empty(); // Vider les données précédentes
+
+        if (data.length === 0) {
+          missionCards.append('<p>Aucune mission trouvée.</p>');
+        } else {
+          $.each(data, function(index, mission) {
+            var card = $('<div class="borne-card"></div>');
+            var titleContainer = $('<div class="title-container"></div>');
+            var imagesContainer = $('<div class="images-container"></div>');
+            
+            titleContainer.append('<h3>Type de mission: ' + mission.Type + '</h3>');
+            
+            // Ajouter les images en fonction du type de mission
+            if (mission.Type === "Niveau de batterie et de gel") {
+              imagesContainer.append('<img src="page_mission/batterie.png" alt="Batterie" class="status-image">');
+              imagesContainer.append('<img src="page_mission/gel.png" alt="Gel" class="status-image">');
+            } else if (mission.Type === "Niveau de batterie") {
+              imagesContainer.append('<img src="page_mission/batterie.png" alt="Batterie" class="status-image">');
+            } else if (mission.Type === "Niveau de gel") {
+              imagesContainer.append('<img src="page_mission/gel.png" alt="Gel" class="status-image">');
+            }
+
+            card.append(titleContainer);
+            card.append(imagesContainer);
+            card.append('<p>ID Borne: ' + mission.Id_Borne + '</p>');
+            card.append('<p>Heure: ' + mission.Heure + '</p>');
+            card.append('<p>Date: ' + mission.Date + '</p>');
+            
+            missionCards.append(card);
+          });
+        }
+      });
+    } 
+
+    // Appeler la fonction pour afficher les données des missions
+    afficherDonnees();
+
+  });
+</script>
+
+</body>
+</html>

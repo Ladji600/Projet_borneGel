@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tester l'Envoi d'Alerte</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Test d'Envoi d'Alerte</h1>
+    <button id="sendAlert">Envoyer Alerte</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#sendAlert').click(function() {
+                $.ajax({
+                    url: 'http://51.210.151.13/btssnir/projets2024/bornegel2024/bornegel2024/SmartGel/API/AlerteBorne.php', // Remplacez par l'URL de votre script PHP
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        alert('Réponse : ' + JSON.stringify(response));
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Erreur AJAX : ' + textStatus, errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
