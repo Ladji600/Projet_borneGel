@@ -60,31 +60,6 @@ public class OneBorneActivity extends AppCompatActivity {
                             //mettre à jour l'interface utislisateur en utilisant les données de l'ojet MyBorne
                             updateUi(borne);
 
-/*
-                            Log.d("idBorne", String.valueOf(idBorne));
-                            Log.d("batterie", String.valueOf(batterie));
-                            Log.d("gel", String.valueOf(gel));
-                            Log.d("heure", heure);
-                            Log.d("date", date);
-
-
-                            // Mettre à jour les TextViews dans l'interface utilisateur avec les données récupérées
-                           TextView idBorneTextView = findViewById(R.id.TextViewIdBorne);
-                            TextView batterieTextView = findViewById(R.id.TextViewBatterie);
-                            TextView gelTextView = findViewById(R.id.TextViewGel);
-                            TextView heureTextView = findViewById(R.id.TextViewHeure);
-                            TextView dateTextView = findViewById(R.id.TextViewDate);
-
-
-
-
-
-                            idBorneTextView.setText("Id Borne: " + idBorne);
-                            batterieTextView.setText("Batterie: " + batterie);
-                            gelTextView.setText("Gel: " + gel);
-                            heureTextView.setText("Heure :"+heure);
-                            dateTextView.setText("Date : "+date);
-*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();

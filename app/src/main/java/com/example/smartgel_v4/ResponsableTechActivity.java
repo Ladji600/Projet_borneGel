@@ -65,7 +65,6 @@ public class ResponsableTechActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Action à effectuer lors du clic sur l'image de retour
-                // Par exemple, revenir à l'activité précédente
                 finish();
             }
         });

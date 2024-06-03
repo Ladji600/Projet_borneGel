@@ -61,10 +61,6 @@ public class AgentActivity extends AppCompatActivity {
         });
 
 
-     /*   SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String useremail = sharedPreferences.getString("useremail", "").toString();
-        Toast.makeText(getApplicationContext(),"Bienvenue : " +useremail,Toast.LENGTH_SHORT).show();
-*/
         CardView cardAffectationHistorique = findViewById(R.id.cardHistorique);
         CardView cardBornes = findViewById(R.id.cardBornes);
         CardView cardRecherche = findViewById(R.id.cardRecherche);

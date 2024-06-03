@@ -64,19 +64,6 @@ public class AlertesActivity extends AppCompatActivity {
 
       // Récupération de l'ID de l'établissement depuis les préférences partagées
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.smartgel_v4.PREFERENCES", Context.MODE_PRIVATE);
-     /*   if (isResponsableAgentOrTechnique()) {
-            idEtablissement = sharedPreferences.getInt("Id_Etablissement", -1);
-        } else {
-            idEtablissement = sharedPreferences.getInt("IdEtablissement", -1);
-        }
-
-        // Gestion de l'ID de l'établissement si non trouvé
-        if (idEtablissement == -1) {
-            Log.e(TAG, "Identifiant d'établissement non trouvé dans les préférences partagées.");
-            // Traitez ce cas selon vos besoins, par exemple, affichez un message d'erreur ou terminez l'activité.
-            finish();
-            return;
-        }*/
 
         nomEtablissementText = findViewById(R.id.etablissementTextView);
         nomEtablissementText.setText(nomEtablissement);
@@ -109,6 +96,7 @@ public class AlertesActivity extends AppCompatActivity {
             // Appel de la méthode pour récupérer le nom de l'établissement
         } else {
             // Gérer le cas où l'ID de l'établissement n'est pas disponible
+            Log.d("No ID", "Aucun établissement disponible");
         }
     }
 

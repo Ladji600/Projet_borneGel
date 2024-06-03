@@ -140,15 +140,6 @@ public class DoMissionActivity extends AppCompatActivity {
                                 // Gérer la réponse de l'API si nécessaire
                                 Toast.makeText(DoMissionActivity.this, "Affectation effectuée avec succès", Toast.LENGTH_SHORT).show();
 
-                            /*    // Enregistrer la notification
-                                String notificationTitle = "Une nouvelle affectation a été créée.";
-                                String notificationMessage = "Vous avez un missionà effectuer.";
-
-
-                                sendNotificationToUser(selectedUserId, notificationTitle, notificationMessage);
-                                // Afficher l'ID de l'utilisateur sélectionné dans le log
-                                Log.d("SelectedUserID", "ID de l'utilisateur sélectionné : " + selectedUserId);*/
-
                             }
                         },
                         new Response.ErrorListener() {
@@ -314,17 +305,4 @@ public class DoMissionActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
-
-
-   /* private void sendNotificationToUser(int userIdSpinner, String title, String message) {
-        // Construire le message de la notification
-        String notificationMessage = message;
-        // Convertir userIdSpinner en String
-        String userIdString = String.valueOf(userIdSpinner);
-
-        // Envoyer la notification à l'utilisateur correspondant à l'ID
-       NotificationHelper.sendNotification(this, title, notificationMessage, userIdString);
-    }*/
-
-
 }

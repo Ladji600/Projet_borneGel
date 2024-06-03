@@ -9,8 +9,7 @@ public class MyAffectation {
     private String date;
     private int idEmploye;
     private  int idBorne;
-   // private int niveauGel;
-  //  private int niveauBatterie;
+
     private String salle;
 
     private int idEtablissement;
